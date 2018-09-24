@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'OKImageDownloader_Example' do
+  pod 'OKImageDownloader', :path => '../'
+
+  target 'OKImageDownloader_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

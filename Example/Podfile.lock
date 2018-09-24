@@ -1,0 +1,16 @@
+PODS:
+  - OKImageDownloader (0.1.0)
+
+DEPENDENCIES:
+  - OKImageDownloader (from `../`)
+
+EXTERNAL SOURCES:
+  OKImageDownloader:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  OKImageDownloader: 6989737601eee0196ac976adf53ddb288b5d234d
+
+PODFILE CHECKSUM: 3596190568a185f455c4a614816267053346cb2c
+
+COCOAPODS: 1.5.3
