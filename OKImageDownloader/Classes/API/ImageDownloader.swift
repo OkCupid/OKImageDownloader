@@ -8,7 +8,7 @@
 
 import UIKit
 
-public final class ImageDownloader {
+public final class ImageDownloader: ImageDownloading {
     
     // MARK: - Public Properties
     
