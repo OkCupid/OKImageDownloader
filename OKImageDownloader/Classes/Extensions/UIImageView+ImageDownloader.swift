@@ -27,7 +27,7 @@ public extension UIImageView {
         }
     }
     
-    public func downloadImage(with url: URL, completionHandler: ImageDownloader.CompletionHandler?, imageDownloader: ImageDownloader = ImageDownloader.shared) {
+    public func downloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler?) {
         imageDownloaderReceipt = imageDownloader.download(url: url) { dataResponse, downloadReceipt in
          
             guard let completionHandler = completionHandler else {
@@ -46,11 +46,11 @@ public extension UIImageView {
         }
     }
     
-    public func cancelDownloadImage(with url: URL, imageDownloader: ImageDownloader = ImageDownloader.shared) {
+    public func cancelDownloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared) {
         imageDownloader.cancel(url: url, receipt: imageDownloaderReceipt)
     }
     
-    public func cancelDownloadImage(imageDownloader: ImageDownloader = ImageDownloader.shared) {
+    public func cancelDownloadImage(imageDownloader: ImageDownloading = ImageDownloader.shared) {
         guard let imageDownloaderReceipt = imageDownloaderReceipt else {
             return
         }

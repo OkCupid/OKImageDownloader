@@ -12,6 +12,7 @@
 		176CC1CB215304F000F7B862 /* APIUrlLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176CC1CA215304F000F7B862 /* APIUrlLoader.swift */; };
 		176CC1CE21530CD400F7B862 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176CC1CD21530CD400F7B862 /* APIRequest.swift */; };
 		176CC1D021530D7100F7B862 /* ImageDownloaderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176CC1CF21530D7100F7B862 /* ImageDownloaderRequest.swift */; };
+		177C3C76217E857100727838 /* ImageDownloading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177C3C75217E857100727838 /* ImageDownloading.swift */; };
 		3617053E413EE24ED6087F90219C84C4 /* CachableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC089D6F3A1412F8BC2A46D1848CD7A /* CachableContainer.swift */; };
 		3D6FDD8D9A6CB743FE6956E4837FAD54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		4A8A9003D320C5D6385B69B15E0AC22B /* UIImage+Downloading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDBE14E294EDBCEB9BEB57A7441B88 /* UIImage+Downloading.swift */; };
@@ -52,6 +53,7 @@
 		176CC1CA215304F000F7B862 /* APIUrlLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIUrlLoader.swift; sourceTree = "<group>"; };
 		176CC1CD21530CD400F7B862 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		176CC1CF21530D7100F7B862 /* ImageDownloaderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloaderRequest.swift; sourceTree = "<group>"; };
+		177C3C75217E857100727838 /* ImageDownloading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloading.swift; sourceTree = "<group>"; };
 		1AB70E9F0CEF9FF13B2E1C8606EAD66C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		229D7850FEF853B189A97F7A0F8C8497 /* OKImageDownloader-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "OKImageDownloader-dummy.m"; sourceTree = "<group>"; };
 		2401F221782471144BE9B2AC19E6078E /* Pods-OKImageDownloader_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-OKImageDownloader_Tests-resources.sh"; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				176CC1CD21530CD400F7B862 /* APIRequest.swift */,
+				177C3C75217E857100727838 /* ImageDownloading.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				176CC1D021530D7100F7B862 /* ImageDownloaderRequest.swift in Sources */,
 				02D0E3AD633CCC9A7C48642A44B66DC0 /* ImageDownloaderReceipt.swift in Sources */,
 				9A4C917BF32E1C794BB1A770838F7AA7 /* Int+FileSizeConverter.swift in Sources */,
+				177C3C76217E857100727838 /* ImageDownloading.swift in Sources */,
 				A0DF4808F4B715F34AB96D607499BED9 /* OKImageDownloader-dummy.m in Sources */,
 				176CC1CB215304F000F7B862 /* APIUrlLoader.swift in Sources */,
 				4A8A9003D320C5D6385B69B15E0AC22B /* UIImage+Downloading.swift in Sources */,

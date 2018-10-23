@@ -44,7 +44,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         XCTAssertNil(imageView.imageDownloaderReceipt?.url)
         
-        imageView.downloadImage(with: url, completionHandler: nil, imageDownloader: imageDownloader)
+        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         XCTAssertNotNil(imageView.imageDownloaderReceipt?.url)
     }
@@ -68,9 +68,9 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        imageView.downloadImage(with: url, completionHandler: completionHandler, imageDownloader: imageDownloader)
+        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 2)
     }
     
     func test_downloadImage_whenFailureAndCompletionHandler_itForwardsCompletionHandler() {
@@ -92,7 +92,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        imageView.downloadImage(with: url, completionHandler: completionHandler, imageDownloader: imageDownloader)
+        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
         wait(for: [expectation], timeout: 1)
     }
@@ -105,7 +105,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         XCTAssertNil(imageView.image)
         
-        imageView.downloadImage(with: url, completionHandler: nil, imageDownloader: imageDownloader)
+        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
@@ -119,7 +119,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
     
     func test_downloadImage_whenFailureAndNoCompletionHandler_itDoesNotSetTheImage() {
                 
-        imageView.downloadImage(with: url, completionHandler: nil, imageDownloader: imageDownloader)
+        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         XCTAssertNil(imageView.image)
     }
