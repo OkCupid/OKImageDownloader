@@ -71,7 +71,6 @@ public final class ImageDownloader: ImageDownloading {
     
     public func download(url: URL, receiptHandler: ImageDownloaderReceiptHandling? = nil, completionHandler: @escaping CompletionHandler) {
         let receipt = ImageDownloaderReceipt(id: UUID(), url: url)
-        var receiptHandler = receiptHandler
         receiptHandler?.imageDownloaderReceipt = receipt
         
         synchronizationQueue.sync {

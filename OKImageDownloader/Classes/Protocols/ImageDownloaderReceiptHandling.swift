@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol ImageDownloaderReceiptHandling {
+public protocol ImageDownloaderReceiptHandling: class {
     var imageDownloaderReceipt: ImageDownloaderReceipt? { get set }
 }
