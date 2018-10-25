@@ -118,7 +118,6 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
     }
     
     func test_downloadImage_whenFailureAndNoCompletionHandler_itDoesNotSetTheImage() {
-                
         imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         XCTAssertNil(imageView.image)

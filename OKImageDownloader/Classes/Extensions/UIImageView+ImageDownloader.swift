@@ -28,8 +28,7 @@ public extension UIImageView {
     }
     
     public func downloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler?) {
-        imageDownloaderReceipt = imageDownloader.download(url: url) { dataResponse, downloadReceipt in
-         
+        imageDownloader.download(url: url, receiptHandler: self) { dataResponse, downloadReceipt in
             guard let completionHandler = completionHandler else {
                 switch dataResponse {
                 case let .success(image):
@@ -59,3 +58,5 @@ public extension UIImageView {
     }
     
 }
+
+extension UIImageView: ImageDownloaderReceiptHandling {}

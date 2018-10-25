@@ -281,10 +281,12 @@ final class ImageDownloaderTests: XCTestCase {
                 XCTFail()
             }
         }
+        let imageViewOne = UIImageView()
+        let imageViewTwo = UIImageView()
         
-        let receiptToCancel = imageDownloader.download(url: url, completionHandler: firstCompletionHandler)
-        imageDownloader.download(url: url, completionHandler: secondCompletionHandler)
-        imageDownloader.cancel(url: url, receipt: receiptToCancel)
+        imageDownloader.download(url: url, receiptHandler: imageViewOne, completionHandler: firstCompletionHandler)
+        imageDownloader.download(url: url, receiptHandler: imageViewTwo, completionHandler: secondCompletionHandler)
+        imageDownloader.cancel(url: url, receipt: imageViewOne.imageDownloaderReceipt)
         
         wait(for: [expectation], timeout: 2)
     }
