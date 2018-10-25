@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		02D0E3AD633CCC9A7C48642A44B66DC0 /* ImageDownloaderReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2938AE5A01C87658689FB92497EB7105 /* ImageDownloaderReceipt.swift */; };
 		076B39E87F4A642B18763D39BF326B2D /* Pods-OKImageDownloader_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = EDBB407516D17EB154D4B95C9BB34B23 /* Pods-OKImageDownloader_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		17012A0E21821F5000A6DE75 /* ImageDownloaderReceiptHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17012A0D21821F5000A6DE75 /* ImageDownloaderReceiptHandling.swift */; };
 		176CC1CB215304F000F7B862 /* APIUrlLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176CC1CA215304F000F7B862 /* APIUrlLoader.swift */; };
 		176CC1CE21530CD400F7B862 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176CC1CD21530CD400F7B862 /* APIRequest.swift */; };
 		176CC1D021530D7100F7B862 /* ImageDownloaderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176CC1CF21530D7100F7B862 /* ImageDownloaderRequest.swift */; };
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		1069444B5530E3DBBBB333A4D157A092 /* Pods_OKImageDownloader_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OKImageDownloader_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		17012A0D21821F5000A6DE75 /* ImageDownloaderReceiptHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloaderReceiptHandling.swift; sourceTree = "<group>"; };
 		17199839976578ABF9F1DCE86871044E /* Pods-OKImageDownloader_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-OKImageDownloader_Example-frameworks.sh"; sourceTree = "<group>"; };
 		176CC1CA215304F000F7B862 /* APIUrlLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIUrlLoader.swift; sourceTree = "<group>"; };
 		176CC1CD21530CD400F7B862 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 			children = (
 				176CC1CD21530CD400F7B862 /* APIRequest.swift */,
 				177C3C75217E857100727838 /* ImageDownloading.swift */,
+				17012A0D21821F5000A6DE75 /* ImageDownloaderReceiptHandling.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 				833BB7A8B14F6FB186E148344FD751E8 /* ImageDownloaderError.swift in Sources */,
 				176CC1D021530D7100F7B862 /* ImageDownloaderRequest.swift in Sources */,
 				02D0E3AD633CCC9A7C48642A44B66DC0 /* ImageDownloaderReceipt.swift in Sources */,
+				17012A0E21821F5000A6DE75 /* ImageDownloaderReceiptHandling.swift in Sources */,
 				9A4C917BF32E1C794BB1A770838F7AA7 /* Int+FileSizeConverter.swift in Sources */,
 				177C3C76217E857100727838 /* ImageDownloading.swift in Sources */,
 				A0DF4808F4B715F34AB96D607499BED9 /* OKImageDownloader-dummy.m in Sources */,

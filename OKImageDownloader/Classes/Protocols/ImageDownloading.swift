@@ -12,8 +12,7 @@ public protocol ImageDownloading: class {
     var urlCache: URLCache { get }
     var urlSessionConfiguration: URLSessionConfiguration { get }
     
-    @discardableResult
-    func download(url: URL, completionHandler: @escaping ImageDownloader.CompletionHandler) -> ImageDownloaderReceipt
+    func download(url: URL, receiptHandler: ImageDownloaderReceiptHandling?, completionHandler: @escaping ImageDownloader.CompletionHandler)
     
     func cancel(url: URL, receipt: ImageDownloaderReceipt?)
 }

@@ -69,9 +69,10 @@ public final class ImageDownloader: ImageDownloading {
     
     // MARK: - Downloading
     
-    @discardableResult
-    public func download(url: URL, completionHandler: @escaping CompletionHandler) -> ImageDownloaderReceipt {
+    public func download(url: URL, receiptHandler: ImageDownloaderReceiptHandling? = nil, completionHandler: @escaping CompletionHandler) {
         let receipt = ImageDownloaderReceipt(id: UUID(), url: url)
+        var receiptHandler = receiptHandler
+        receiptHandler?.imageDownloaderReceipt = receipt
         
         synchronizationQueue.sync {
             guard !checkForImageInCacheAndCompleteIfNeeded(with: url, receipt: receipt, completionHandler: completionHandler) else {
@@ -92,8 +93,6 @@ public final class ImageDownloader: ImageDownloading {
                 self.processSuccessfulResponse(url: url, image: image, error: error)
             } 
         }
-        
-        return receipt
     }
     
     // MARK: - Cancelling
