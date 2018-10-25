@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'OKImageDownloader'
-  s.version          = '0.2.0'
+  s.version          = '0.3.0'
   s.summary          = 'Image downloading made easy'
   s.description      = 'A simple framework to manage the downloading, decompressing, caching and cancelling of images.'
   s.homepage         = 'https://github.com/okcupid/OKImageDownloader'
