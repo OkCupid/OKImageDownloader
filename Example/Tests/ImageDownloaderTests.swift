@@ -82,7 +82,7 @@ final class ImageDownloaderTests: XCTestCase {
         
         imageDownloader.download(url: url, completionHandler: completionHandler)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_download_whenCurrentLoaderForUrl_itAppendsTheCompletionHandlerAndCallsBoth() {
@@ -93,7 +93,7 @@ final class ImageDownloaderTests: XCTestCase {
             return (HTTPURLResponse(), self.expectedImageData)
         }
         
-        usleep(100000)
+        usleep(200000)
         
         // No handlers
         XCTAssertEqual(imageDownloader.activeCompletionHandlers(for: url), 0)
@@ -127,7 +127,7 @@ final class ImageDownloaderTests: XCTestCase {
         // Two handlers
         XCTAssertEqual(imageDownloader.activeCompletionHandlers(for: url), 2)
         
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_download_whenNoCurrentLoaderForUrl_itCreatesTheLoaderAndCallsCompletionUponFinish() {
@@ -139,7 +139,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(100000)
+        usleep(200000)
         
         // No loaders
         XCTAssertNil(imageDownloader.currentLoaders[url])
@@ -160,7 +160,7 @@ final class ImageDownloaderTests: XCTestCase {
         // Loader with correct URL
         XCTAssertEqual(imageDownloader.currentLoaders[url]?.apiRequest.url, url)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_download_whenComplete_itClearsActiveLoaderAndCompletionHandlers() {
@@ -172,7 +172,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(100000)
+        usleep(200000)
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case .success = dataResponse {
@@ -191,7 +191,7 @@ final class ImageDownloaderTests: XCTestCase {
         // Loader with correct URL
         XCTAssertEqual(imageDownloader.currentLoaders[url]?.apiRequest.url, url)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_download_whenInvalidData_itCallsCompletionUponFinish() {
@@ -203,7 +203,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(100000)
+        usleep(200000)
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case let .failure(error) = dataResponse, let imageError = error as? ImageDownloaderError {
@@ -217,7 +217,7 @@ final class ImageDownloaderTests: XCTestCase {
         
         imageDownloader.download(url: url, completionHandler: completionHandler)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_cancel_itCallsCompletionUponCancel() {
@@ -229,7 +229,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(100000)
+        usleep(200000)
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case let .failure(error) = dataResponse, let imageError = error as? ImageDownloaderError {
@@ -244,7 +244,7 @@ final class ImageDownloaderTests: XCTestCase {
         imageDownloader.download(url: url, completionHandler: completionHandler)
         imageDownloader.cancel(url: url)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_cancel_whenOnlyOneReceiptIsCancelled_itCallsCompletionUponCancelAndSuccess() {
@@ -254,7 +254,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(100000)
+        usleep(200000)
         
         let expectation = XCTestExpectation(description: "Image Downloader Image Success")
         
@@ -295,7 +295,7 @@ final class ImageDownloaderTests: XCTestCase {
         imageDownloader.download(url: url, receiptHandler: imageViewTwo, completionHandler: secondCompletionHandler)
         imageDownloader.cancel(url: url, receipt: imageViewOne.imageDownloaderReceipt)
         
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 5)
     }
 
     func test_didReceiveMemoryWarning_itClearsTheImageCache() {
@@ -375,7 +375,7 @@ final class ImageDownloaderTests: XCTestCase {
         
         isImageInCache = imageDownloader.checkForImageInCacheAndCompleteIfNeeded(with: url, receipt: receipt, completionHandler: completionHandler)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_checkForImageInCacheAndCompleteIfNeeded_whenNoCachedImage_itReturnsFalseAndDoesNotFireCompletionHandler() {
@@ -405,7 +405,7 @@ final class ImageDownloaderTests: XCTestCase {
         XCTAssertEqual(imageDownloader.activeCompletionHandlers(for: self.url), 2)
         
         imageDownloader.complete(url: url, receipt: receiptToCancel, dataResponse: .failure(ImageDownloaderError.cancelled))
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_complete_whenNoReceiptProvided_itFiresCompletionHandlersAndClearsLoadersAndCompletionHandlers() {
@@ -425,7 +425,7 @@ final class ImageDownloaderTests: XCTestCase {
         XCTAssertEqual(imageDownloader.activeCompletionHandlers(for: self.url), 2)
         
         imageDownloader.complete(url: url, receipt: nil, dataResponse: .success(expectedImage))
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
 }

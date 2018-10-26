@@ -41,7 +41,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), self.expectedImageData)
         }
-        usleep(100000)
+        usleep(200000)
         
         XCTAssertNil(imageView.imageDownloaderReceipt?.url)
         
@@ -55,7 +55,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), self.expectedImageData)
         }
-        usleep(100000)
+        usleep(200000)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
@@ -72,7 +72,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_downloadImage_whenFailureAndCompletionHandler_itForwardsCompletionHandler() {
@@ -80,7 +80,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), Data())
         }
-        usleep(100000)
+        usleep(200000)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
@@ -97,7 +97,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_downloadImage_whenSuccessAndNoCompletionHandler_itSetsTheImage() {
@@ -105,7 +105,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), self.expectedImageData)
         }
-        usleep(100000)
+        usleep(200000)
         
         XCTAssertNil(imageView.image)
         
@@ -118,7 +118,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_downloadImage_whenFailureAndNoCompletionHandler_itDoesNotSetTheImage() {

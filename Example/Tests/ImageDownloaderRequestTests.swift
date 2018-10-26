@@ -51,7 +51,7 @@ final class ImageDownloaderRequestTests: XCTestCase {
             expectation.fulfill()
         }
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
     
     func test_load_whenInvalidData_itCompletesWithDataInvalidError() {
@@ -73,7 +73,7 @@ final class ImageDownloaderRequestTests: XCTestCase {
             expectation.fulfill()
         }
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
     }
 
 }
