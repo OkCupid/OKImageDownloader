@@ -30,12 +30,6 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         imageView = UIImageView()
     }
     
-    override func tearDown() {
-        super.tearDown()
-        
-        MockUrlProtocol.requestHandler = nil
-    }
-    
     func test_downloadImage_itSetsTheImageDownloadReceipt() {
         MockUrlProtocol.requestHandler = { request in
             XCTAssertEqual(request.url, self.url)
@@ -70,7 +64,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 20)
     }
     
     func test_downloadImage_whenFailureAndCompletionHandler_itForwardsCompletionHandler() {
@@ -94,7 +88,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 20)
     }
     
     func test_downloadImage_whenSuccessAndNoCompletionHandler_itSetsTheImage() {
@@ -114,7 +108,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 20)
     }
     
     func test_downloadImage_whenFailureAndNoCompletionHandler_itDoesNotSetTheImage() {
