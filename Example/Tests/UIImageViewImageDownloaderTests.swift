@@ -44,12 +44,10 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
     }
     
     func test_downloadImage_whenSuccessAndCompletionHandler_itForwardsCompletionHandler() {
-        let requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data)) = { request in
+        MockUrlProtocol.requestHandler = { request in
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), self.expectedImageData)
         }
-        
-        MockUrlProtocol.requestHandler = requestHandler
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
@@ -70,12 +68,10 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
     }
     
     func test_downloadImage_whenFailureAndCompletionHandler_itForwardsCompletionHandler() {
-        let requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data)) = { request in
+        MockUrlProtocol.requestHandler = { request in
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), Data())
         }
-        
-        MockUrlProtocol.requestHandler = requestHandler
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
