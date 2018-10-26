@@ -41,7 +41,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), self.expectedImageData)
         }
-        usleep(300000)
+        usleep(200000)
         
         XCTAssertNil(imageView.imageDownloaderReceipt?.url)
         
@@ -55,7 +55,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), self.expectedImageData)
         }
-        usleep(300000)
+        usleep(200000)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
@@ -80,7 +80,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), Data())
         }
-        usleep(300000)
+        usleep(500000)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
@@ -105,7 +105,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), self.expectedImageData)
         }
-        usleep(300000)
+        usleep(200000)
         
         XCTAssertNil(imageView.image)
         
