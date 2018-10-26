@@ -29,13 +29,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         imageView = UIImageView()
     }
-    
-    override func tearDown() {
-        super.tearDown()
         
-        MockUrlProtocol.requestHandler = nil
-    }
-    
     func test_downloadImage_itSetsTheImageDownloadReceipt() {
         MockUrlProtocol.requestHandler = { request in
             XCTAssertEqual(request.url, self.url)
