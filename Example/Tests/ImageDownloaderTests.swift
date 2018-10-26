@@ -93,7 +93,7 @@ final class ImageDownloaderTests: XCTestCase {
             return (HTTPURLResponse(), self.expectedImageData)
         }
         
-        usleep(200000)
+        usleep(300000)
         
         // No handlers
         XCTAssertEqual(imageDownloader.activeCompletionHandlers(for: url), 0)
@@ -139,7 +139,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(200000)
+        usleep(300000)
         
         // No loaders
         XCTAssertNil(imageDownloader.currentLoaders[url])
@@ -172,7 +172,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(200000)
+        usleep(300000)
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case .success = dataResponse {
@@ -203,7 +203,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(200000)
+        usleep(300000)
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case let .failure(error) = dataResponse, let imageError = error as? ImageDownloaderError {
@@ -229,7 +229,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(200000)
+        usleep(300000)
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case let .failure(error) = dataResponse, let imageError = error as? ImageDownloaderError {
@@ -254,7 +254,7 @@ final class ImageDownloaderTests: XCTestCase {
         }
         
         MockAsyncUrlProtocol.deadline = 0
-        usleep(200000)
+        usleep(300000)
         
         let expectation = XCTestExpectation(description: "Image Downloader Image Success")
         
