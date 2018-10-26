@@ -80,7 +80,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), Data())
         }
-        usleep(500000)
+        usleep(200000)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
@@ -95,7 +95,9 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.imageView.downloadImage(with: self.url, imageDownloader: self.imageDownloader, completionHandler: completionHandler)
+        }
         
         wait(for: [expectation], timeout: 5)
     }
