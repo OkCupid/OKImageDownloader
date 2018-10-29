@@ -1,6 +1,6 @@
 # OKImageDownloader
 
-[![CI Status](https://img.shields.io/travis/okcupid/OKImageDownloader.svg?style=flat)](https://travis-ci.org/okcupid/OKImageDownloader)
+[![CI Status](https://img.shields.io/travis/OkCupid/OKImageDownloader.svg?style=flat)](https://travis-ci.org/OkCupid/OKImageDownloader)
 [![Version](https://img.shields.io/cocoapods/v/OKImageDownloader.svg?style=flat)](https://cocoapods.org/pods/OKImageDownloader)
 [![License](https://img.shields.io/cocoapods/l/OKImageDownloader.svg?style=flat)](https://cocoapods.org/pods/OKImageDownloader)
 [![Platform](https://img.shields.io/cocoapods/p/OKImageDownloader.svg?style=flat)](https://cocoapods.org/pods/OKImageDownloader)
