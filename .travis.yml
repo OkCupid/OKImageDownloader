@@ -7,6 +7,9 @@ env:
   - DESTINATION='platform=iOS Simulator,name=iPhone Xs,OS=13.0'
   - DESTINATION='platform=iOS Simulator,name=iPhone 11 Pro,OS=14.0'
 
+install: 
+  - swift package update
+  
 script:
 - swift build
 - swift test
