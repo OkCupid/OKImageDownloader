@@ -16,7 +16,6 @@
 		177C3C76217E857100727838 /* ImageDownloading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177C3C75217E857100727838 /* ImageDownloading.swift */; };
 		3617053E413EE24ED6087F90219C84C4 /* CachableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC089D6F3A1412F8BC2A46D1848CD7A /* CachableContainer.swift */; };
 		3D6FDD8D9A6CB743FE6956E4837FAD54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
-		4A8A9003D320C5D6385B69B15E0AC22B /* UIImage+Downloading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDBE14E294EDBCEB9BEB57A7441B88 /* UIImage+Downloading.swift */; };
 		56F3D5004FB4665FE3EBE8A9696BD862 /* Pods-OKImageDownloader_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D993B27880F046D465EA42C3DBACEE /* Pods-OKImageDownloader_Tests-dummy.m */; };
 		68ECFCB00635D5ECFF51EF1C5DB339CA /* DataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AE672BF49989A7A8B5F56BA4A20956 /* DataResponse.swift */; };
 		7445DACF6E33DA0420CC5932224B513C /* Pods-OKImageDownloader_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C233B78EFD3041DB37760D781A494B /* Pods-OKImageDownloader_Example-dummy.m */; };
@@ -91,7 +90,6 @@
 		BDB6539B93614160132E25D9AAC16881 /* OKImageDownloader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OKImageDownloader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C45AC9F98D4C206AE0743BE8DF2D7CA7 /* OKImageDownloader.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OKImageDownloader.xcconfig; sourceTree = "<group>"; };
 		CEC089D6F3A1412F8BC2A46D1848CD7A /* CachableContainer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CachableContainer.swift; sourceTree = "<group>"; };
-		D4DDBE14E294EDBCEB9BEB57A7441B88 /* UIImage+Downloading.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIImage+Downloading.swift"; sourceTree = "<group>"; };
 		D800CC8C120FB0CEB444F7B85345EA88 /* Int+FileSizeConverter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Int+FileSizeConverter.swift"; sourceTree = "<group>"; };
 		DD7C11E4B7AF9961EBCCF45D7F962A7E /* Pods-OKImageDownloader_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-OKImageDownloader_Example-resources.sh"; sourceTree = "<group>"; };
 		EC27849B2BF32AFE0D24B3E59FD9055F /* Pods_OKImageDownloader_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OKImageDownloader_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				D800CC8C120FB0CEB444F7B85345EA88 /* Int+FileSizeConverter.swift */,
-				D4DDBE14E294EDBCEB9BEB57A7441B88 /* UIImage+Downloading.swift */,
 				35BDA1BFC9DD0A2D0A9693BCA45B29F3 /* UIImageView+ImageDownloader.swift */,
 			);
 			path = Extensions;
@@ -446,7 +443,6 @@
 				177C3C76217E857100727838 /* ImageDownloading.swift in Sources */,
 				A0DF4808F4B715F34AB96D607499BED9 /* OKImageDownloader-dummy.m in Sources */,
 				176CC1CB215304F000F7B862 /* APIUrlLoader.swift in Sources */,
-				4A8A9003D320C5D6385B69B15E0AC22B /* UIImage+Downloading.swift in Sources */,
 				84EF2192E20057389E1FDCC6EAE73669 /* UIImageView+ImageDownloader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

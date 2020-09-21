@@ -88,8 +88,8 @@ public final class ImageDownloader: ImageDownloading {
             currentCompletionHandlers[url] = [receipt: completionHandler]
             currentLoaders[url] = loader
             
-            loader.load { image, error in
-                self.processSuccessfulResponse(url: url, image: image, error: error)
+            loader.load { [weak self] image, error in
+                self?.processSuccessfulResponse(url: url, image: image, error: error)
             } 
         }
     }
@@ -193,8 +193,6 @@ public final class ImageDownloader: ImageDownloading {
                 dataResponse = .failure(ImageDownloaderError.dataInvalid)
                 return
             }
-            
-            image.inflate()
             
             let imageCost = image.jpegData(compressionQuality: 1)?.count ?? 0
             self.imageCache.setObject(CachableContainer(object: image), forKey: url as NSURL, cost: imageCost)

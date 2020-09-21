@@ -13,7 +13,7 @@ struct ImageDownloaderRequest: APIRequest {
     
     func parseResponse(data: Data) throws -> UIImage {
         do {
-            if let image = UIImage.threadSafeImage(with: data) {
+            if let image = UIImage(data: data) {
                 return image
             } else {
                 throw ImageDownloaderError.dataInvalid
