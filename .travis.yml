@@ -1,18 +1,12 @@
-osx_image: xcode10
+osx_image: xcode12
+os: osx
 language: swift
 
 env:
-  - DESTINATION='platform=iOS Simulator,name=iPhone 6S,OS=9.3'
-  - DESTINATION='platform=iOS Simulator,name=iPhone 7,OS=10.3.1'
-  - DESTINATION='platform=iOS Simulator,name=iPhone 8,OS=11.4'
-  - DESTINATION='platform=iOS Simulator,name=iPhone X,OS=11.4'
   - DESTINATION='platform=iOS Simulator,name=iPhone X,OS=12.0'
-
-podfile: Example/Podfile
-before_install:
-- gem install cocoapods # Since Travis is not always on latest version
-- pod install --project-directory=Example
+  - DESTINATION='platform=iOS Simulator,name=iPhone Xs,OS=13.0'
+  - DESTINATION='platform=iOS Simulator,name=iPhone 11 Pro,OS=14.0'
 
 script:
-- set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/OKImageDownloader.xcworkspace -scheme OKImageDownloader-Example -destination "$DESTINATION" | xcpretty
-- pod lib lint
+- swift build
+- swift test
