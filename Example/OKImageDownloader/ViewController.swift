@@ -16,7 +16,7 @@ final class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        imageView.downloadImage(with: URL(string: "https://www.popsci.com/sites/popsci.com/files/styles/655_1x_/public/images/2017/10/terrier-puppy.jpg?itok=Ppdi06hH&fc=50,50")!, completionHandler: nil)
+        imageView.downloadImage(with: URL(string: "https://cdn.okccdn.com/media/img/hub/mediakit/okcupid_darkbg_2019.png")!, completionHandler: nil)
     }
 
 }

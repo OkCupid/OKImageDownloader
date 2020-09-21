@@ -11,10 +11,10 @@ import Foundation
 public extension UIImageView {
     
     private struct AssociatedKey {
-        static var imageDownloaderReceipt = "af_UIImageView.ImageDownloaderReceipt"
+        static var imageDownloaderReceipt = "ok_UIImageView.ImageDownloaderReceipt"
     }
     
-    public var imageDownloaderReceipt: ImageDownloaderReceipt? {
+    var imageDownloaderReceipt: ImageDownloaderReceipt? {
         get {
             if let imageDownloaderReceipt = objc_getAssociatedObject(self, &AssociatedKey.imageDownloaderReceipt) as? ImageDownloaderReceipt {
                 return imageDownloaderReceipt
@@ -27,7 +27,9 @@ public extension UIImageView {
         }
     }
     
-    public func downloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler?) {
+    func downloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler?) {
+        cancelDownloadImage()
+        
         imageDownloader.download(url: url, receiptHandler: self) { dataResponse, downloadReceipt in
             guard let completionHandler = completionHandler else {
                 switch dataResponse {
@@ -45,11 +47,11 @@ public extension UIImageView {
         }
     }
     
-    public func cancelDownloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared) {
+    func cancelDownloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared) {
         imageDownloader.cancel(url: url, receipt: imageDownloaderReceipt)
     }
     
-    public func cancelDownloadImage(imageDownloader: ImageDownloading = ImageDownloader.shared) {
+    func cancelDownloadImage(imageDownloader: ImageDownloading = ImageDownloader.shared) {
         guard let imageDownloaderReceipt = imageDownloaderReceipt else {
             return
         }
