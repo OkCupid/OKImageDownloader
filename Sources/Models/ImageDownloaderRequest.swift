@@ -5,7 +5,7 @@
 //  Created by Jordan Guggenheim on 9/19/18.
 //
 
-import Foundation
+import UIKit
 
 struct ImageDownloaderRequest: APIRequest {
     

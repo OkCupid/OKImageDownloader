@@ -13,7 +13,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
     
     private var imageDownloader: ImageDownloader!
     private let notificationCenter = NotificationCenter()
-    private lazy var expectedImage = UIImage(named: "OkCupid App Icon", in: Bundle(for: type(of: self)), compatibleWith: nil)!
+    private lazy var expectedImage = UIImage(named: "OkCupid App Icon", in: .module, compatibleWith: nil)!
     private lazy var expectedImageData = expectedImage.jpegData(compressionQuality: 0)!
     private let url = URL(string: "https://www.test.com")!
     private var imageView: UIImageView!

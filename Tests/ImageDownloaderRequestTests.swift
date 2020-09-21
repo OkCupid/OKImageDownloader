@@ -32,7 +32,7 @@ final class ImageDownloaderRequestTests: XCTestCase {
     }
     
     func test_load_whenValidData_itCompletesWithImage() {
-        let expectedImage = UIImage(named: "OkCupid App Icon", in: Bundle(for: type(of: self)), compatibleWith: nil)!
+        let expectedImage = UIImage(named: "OkCupid App Icon", in: .module, compatibleWith: nil)!
         let expectedImageData = expectedImage.jpegData(compressionQuality: 0)!
         
         MockUrlProtocol.requestHandler = { request in
