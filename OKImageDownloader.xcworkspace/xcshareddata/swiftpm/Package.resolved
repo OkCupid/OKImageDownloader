@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "OKImageDownloader",
+        "repositoryURL": "https://github.com/OkCupid/OKImageDownloader",
+        "state": {
+          "branch": "chore/swift-package-support",
+          "revision": "056340ad092df59b78ed2ebe8c74a7007217b45c",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
