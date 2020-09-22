@@ -14,8 +14,7 @@ let package = Package(
         .target(
             name: "OKImageDownloader",
             dependencies: [],
-            path: "Sources",
-            exclude: ["Example"]),
+            path: "Sources"),
         .testTarget(
             name: "OKImageDownloaderTests",
             dependencies: ["OKImageDownloader"],
