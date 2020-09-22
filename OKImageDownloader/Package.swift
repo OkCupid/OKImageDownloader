@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "OKImageDownloader",
+    platforms: [.iOS(.v11)],
     products: [
         .library(
             name: "OKImageDownloader",
