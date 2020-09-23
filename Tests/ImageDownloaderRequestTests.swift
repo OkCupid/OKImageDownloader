@@ -1,6 +1,6 @@
 //
 //  ImageDownloaderRequestTests.swift
-//  OKImageDownloader_Example
+//  OKImageDownloader
 //
 //  Created by Jordan Guggenheim on 9/20/18.
 //  Copyright © 2018 OkCupid. All rights reserved.

@@ -1,16 +1,16 @@
 //
-//  UIImageView+ImageDownloader.swift
-//  OkCupid
+//  UIButton+ImageDownloader.swift
+//  OkImageDownloader
 //
-//  Created by Jordan Guggenheim on 9/5/18.
-//  Copyright © 2018 OkCupid. All rights reserved.
+//  Created by Jordan Guggenheim on 9/23/20.
+//  Copyright © 2020 OkCupid. All rights reserved.
 //
 
 import UIKit
 
-public extension ObjectWrapper where T: UIImageView {
+public extension ObjectWrapper where T: UIButton {
     
-    func downloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler? = nil) {
+    func downloadImage(with url: URL, for state: UIControl.State = .normal, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler? = nil) {
         cancelImageDownload()
         
         imageDownloader.download(url: url, receiptHandler: self) { dataResponse, downloadReceipt in
@@ -18,7 +18,7 @@ public extension ObjectWrapper where T: UIImageView {
                 switch dataResponse {
                 case let .success(image):
                     DispatchQueue.executeAsyncOnMain {
-                        self.object.image = image
+                        self.object.setImage(image, for: state)
                     }
                     
                 case .failure:
@@ -34,4 +34,4 @@ public extension ObjectWrapper where T: UIImageView {
     
 }
 
-extension UIImageView: OKImageDownloaderCompatible {}
+extension UIButton: OKImageDownloaderCompatible {}
