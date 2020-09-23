@@ -11,7 +11,7 @@ import UIKit
 public extension UIImageView {
     
     private struct AssociatedKey {
-        static var imageDownloaderReceipt = "ok_UIImageView.ImageDownloaderReceipt"
+        static var imageDownloaderReceipt: String = "ok_UIImageView.ImageDownloaderReceipt"
     }
     
     var imageDownloaderReceipt: ImageDownloaderReceipt? {
@@ -34,7 +34,9 @@ public extension UIImageView {
             guard let completionHandler = completionHandler else {
                 switch dataResponse {
                 case let .success(image):
-                    self.image = image
+                    DispatchQueue.executeAsyncOnMain {
+                        self.image = image
+                    }
                     
                 case .failure:
                     break

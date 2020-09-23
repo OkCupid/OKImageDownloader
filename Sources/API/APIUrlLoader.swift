@@ -26,7 +26,7 @@ final class APIUrlLoader<T: APIRequest> {
             }
             
             do {
-                let parsedResponse = try self.apiRequest.parseResponse(data: data)
+                let parsedResponse: T.ResponseDataType? = try self.apiRequest.parseResponse(data: data)
                 completionHandler(parsedResponse, nil)
                 
             } catch {
