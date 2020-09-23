@@ -12,7 +12,7 @@ public final class ImageDownloader: ImageDownloading {
     
     // MARK: - Public Properties
     
-    public typealias CompletionHandler = (_ dataResponse: DataResponse<UIImage>, _ downloadReceipt: ImageDownloaderReceipt) -> Void
+    public typealias CompletionHandler = (_ dataResponse: Result<UIImage, ImageDownloaderError>, _ downloadReceipt: ImageDownloaderReceipt) -> Void
     public static let shared: ImageDownloader = .init()
     
     public var imageCacheCapacityInBytes: Int = 40.megabytesInBytes {
@@ -147,7 +147,7 @@ public final class ImageDownloader: ImageDownloading {
         return false
     }
     
-    func complete(url: URL, receipt: ImageDownloaderReceipt?, dataResponse: DataResponse<UIImage>) {
+    func complete(url: URL, receipt: ImageDownloaderReceipt?, dataResponse: Result<UIImage, ImageDownloaderError>) {
         let completionHandlersAndReceipts: [(completionHandler: CompletionHandler, imageDownloadReceipt: ImageDownloaderReceipt)]
         
         if let receipt = receipt, let completionHandlerForReceipt = currentCompletionHandlers[url]?[receipt] {
@@ -172,9 +172,9 @@ public final class ImageDownloader: ImageDownloading {
         }
     }
     
-    func processSuccessfulResponse(url: URL, image: UIImage?, error: Error?) {
+    func processSuccessfulResponse(url: URL, image: UIImage?, error: ImageDownloaderError?) {
         imageProcessingQueue.async {
-            let dataResponse: DataResponse<UIImage>
+            let dataResponse: Result<UIImage, ImageDownloaderError>
             
             defer {
                 self.synchronizationQueue.sync {

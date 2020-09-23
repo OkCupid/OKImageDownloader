@@ -76,8 +76,8 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case let .failure(error) = dataResponse, let imageError = error as? ImageDownloaderError {
-                XCTAssertEqual(imageError, .dataInvalid)
+            if case let .failure(error) = dataResponse {
+                XCTAssertEqual(error, .dataInvalid)
                 
             } else {
                 XCTFail()
