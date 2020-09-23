@@ -42,7 +42,7 @@ extension ObjectWrapper: ImageDownloaderReceiptHandling {
         }
     }
     
-    func cancelImageDownload(imageDownloader: ImageDownloading = ImageDownloader.shared) {
+    public func cancelImageDownload(imageDownloader: ImageDownloading = ImageDownloader.shared) {
         guard let imageDownloaderReceipt = imageDownloaderReceipt else {
             return
         }
