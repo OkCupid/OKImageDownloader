@@ -21,12 +21,20 @@ public final class ImageDownloader: ImageDownloading {
         }
     }
     
+    public lazy var session: URLSession = URLSession(configuration: urlSessionConfiguration)
+    
     public lazy var urlCache: URLCache = {
         return URLCache(
             memoryCapacity: 40.megabytesInBytes,
             diskCapacity: 250.megabytesInBytes,
             diskPath: "com.okcupid.imagedownloader"
         )
+    }()
+    
+    public lazy var imageCache: NSCache<NSURL, CachableContainer<UIImage>> = {
+        let imageCache = NSCache<NSURL, CachableContainer<UIImage>>()
+        imageCache.totalCostLimit = imageCacheCapacityInBytes
+        return imageCache
     }()
     
     public lazy var urlSessionConfiguration: URLSessionConfiguration = {
@@ -37,14 +45,6 @@ public final class ImageDownloader: ImageDownloading {
     }()
     
     // MARK: - Internal Properties
-    
-    lazy var session: URLSession = URLSession(configuration: urlSessionConfiguration)
-    
-    lazy var imageCache: NSCache<NSURL, CachableContainer<UIImage>> = {
-        let imageCache = NSCache<NSURL, CachableContainer<UIImage>>()
-        imageCache.totalCostLimit = imageCacheCapacityInBytes
-        return imageCache
-    }()
     
     let synchronizationQueue: DispatchQueue = {
         let name = String(format: "com.okcupid.imagedownloader.synchronizationqueue-%08x%08x", arc4random(), arc4random())

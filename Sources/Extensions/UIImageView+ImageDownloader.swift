@@ -10,8 +10,8 @@ import UIKit
 
 public extension ObjectWrapper where T: UIImageView {
     
-    func downloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler?) {
-        cancelDownloadImage()
+    func downloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler? = nil) {
+        cancelImageDownload()
         
         imageDownloader.download(url: url, receiptHandler: self) { dataResponse, downloadReceipt in
             guard let completionHandler = completionHandler else {
@@ -30,18 +30,6 @@ public extension ObjectWrapper where T: UIImageView {
             
             completionHandler(dataResponse, downloadReceipt)
         }
-    }
-    
-    func cancelDownloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared) {
-        imageDownloader.cancel(url: url, receipt: imageDownloaderReceipt)
-    }
-    
-    func cancelDownloadImage(imageDownloader: ImageDownloading = ImageDownloader.shared) {
-        guard let imageDownloaderReceipt = imageDownloaderReceipt else {
-            return
-        }
-        
-        imageDownloader.cancel(url: imageDownloaderReceipt.url, receipt: imageDownloaderReceipt)
     }
     
 }
