@@ -1,5 +1,5 @@
 //
-//  UIImageViewImageDownloaderTests.swift
+//  UIButtonImageDownloaderTests.swift
 //  OKImageDownloader
 //
 //  Created by Jordan Guggenheim on 9/24/18.
@@ -9,14 +9,14 @@
 import XCTest
 @testable import OKImageDownloader
 
-final class UIImageViewImageDownloaderTests: XCTestCase {
+final class UIButtonImageDownloaderTests: XCTestCase {
     
     private var imageDownloader: ImageDownloader!
     private let notificationCenter = NotificationCenter()
     private lazy var expectedImage = UIImage(named: "OkCupid App Icon", in: .module, compatibleWith: nil)!
     private lazy var expectedImageData = expectedImage.jpegData(compressionQuality: 0)!
     private let url = URL(string: "https://www.test.com")!
-    private var imageView: UIImageView!
+    private var button: UIButton!
     
     override func setUp() {
         super.setUp()
@@ -27,7 +27,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         configuration.protocolClasses = [MockUrlProtocol.self]
         imageDownloader.session = URLSession(configuration: configuration)
         
-        imageView = UIImageView()
+        button = UIButton(type: .custom)
     }
     
     func test_downloadImage_itSetsTheImageDownloadReceipt() {
@@ -36,11 +36,11 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             return (HTTPURLResponse(), self.expectedImageData)
         }
         
-        XCTAssertNil(imageView.ok.imageDownloaderReceipt?.url)
+        XCTAssertNil(button.ok.imageDownloaderReceipt?.url)
         
-        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        button.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
         
-        XCTAssertNotNil(imageView.ok.imageDownloaderReceipt?.url)
+        XCTAssertNotNil(button.ok.imageDownloaderReceipt?.url)
     }
     
     func test_downloadImage_whenSuccessAndCompletionHandler_itForwardsCompletionHandler() {
@@ -49,7 +49,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             return (HTTPURLResponse(), self.expectedImageData)
         }
         
-        let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
+        let expectation = XCTestExpectation(description: "Image Downloader UIButton Success Response")
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case let .success(actualImage) = dataResponse {
@@ -62,7 +62,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
+        button.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
         wait(for: [expectation], timeout: 20)
     }
@@ -73,7 +73,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             return (HTTPURLResponse(), Data())
         }
         
-        let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
+        let expectation = XCTestExpectation(description: "Image Downloader UIButton Success Response")
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case let .failure(error) = dataResponse {
@@ -86,25 +86,26 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
+        button.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
         wait(for: [expectation], timeout: 20)
     }
     
-    func test_downloadImage_whenSuccessAndNoCompletionHandler_itSetsTheImage() {
+    func test_downloadImage_whenSuccessAndNoCompletionHandler_itSetsTheImageForState() {
         MockUrlProtocol.requestHandler = { request in
             XCTAssertEqual(request.url, self.url)
             return (HTTPURLResponse(), self.expectedImageData)
         }
         
-        XCTAssertNil(imageView.image)
+        XCTAssertNil(button.imageView?.image)
         
-        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        button.ok.downloadImage(with: url, for: .highlighted, imageDownloader: imageDownloader, completionHandler: nil)
         
-        let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
+        let expectation = XCTestExpectation(description: "Image Downloader UIButton Success Response")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + MockAsyncUrlProtocol.deadline + 0.1) {
-            XCTAssertNotNil(self.imageView.image)
+            XCTAssertNil(self.button.image(for: .normal))
+            XCTAssertNotNil(self.button.image(for: .highlighted))
             expectation.fulfill()
         }
         
@@ -112,9 +113,9 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
     }
     
     func test_downloadImage_whenFailureAndNoCompletionHandler_itDoesNotSetTheImage() {
-        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        button.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
         
-        XCTAssertNil(imageView.image)
+        XCTAssertNil(button.imageView?.image)
     }
     
 }

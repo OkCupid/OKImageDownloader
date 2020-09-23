@@ -1,6 +1,6 @@
 //
 //  MockAsyncUrlProtocol.swift
-//  OKImageDownloader_Example
+//  OKImageDownloader
 //
 //  Created by Jordan Guggenheim on 9/24/18.
 //  Copyright © 2018 CocoaPods. All rights reserved.

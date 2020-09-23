@@ -1,6 +1,6 @@
 //
 //  ImageDownloaderRequestTests.swift
-//  OKImageDownloader_Example
+//  OKImageDownloader
 //
 //  Created by Jordan Guggenheim on 9/20/18.
 //  Copyright © 2018 OkCupid. All rights reserved.
@@ -64,7 +64,7 @@ final class ImageDownloaderRequestTests: XCTestCase {
         
         loader.load { actualImage, error in
             
-            if let error = error as? ImageDownloaderError {
+            if let error = error {
                 XCTAssertEqual(error, ImageDownloaderError.dataInvalid)
             } else {
                 XCTFail()

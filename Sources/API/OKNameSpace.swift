@@ -41,5 +41,14 @@ extension ObjectWrapper: ImageDownloaderReceiptHandling {
             objc_setAssociatedObject(self.object, &AssociatedKey.imageDownloaderReceipt, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
+    
+    func cancelImageDownload(imageDownloader: ImageDownloading = ImageDownloader.shared) {
+        guard let imageDownloaderReceipt = imageDownloaderReceipt else {
+            return
+        }
+        
+        self.imageDownloaderReceipt = nil
+        imageDownloader.cancel(url: imageDownloaderReceipt.url, receipt: imageDownloaderReceipt)
+    }
 }
 

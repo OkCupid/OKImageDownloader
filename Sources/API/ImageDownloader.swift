@@ -12,7 +12,7 @@ public final class ImageDownloader: ImageDownloading {
     
     // MARK: - Public Properties
     
-    public typealias CompletionHandler = (_ dataResponse: DataResponse<UIImage>, _ downloadReceipt: ImageDownloaderReceipt) -> Void
+    public typealias CompletionHandler = (_ dataResponse: Result<UIImage, ImageDownloaderError>, _ downloadReceipt: ImageDownloaderReceipt) -> Void
     public static let shared: ImageDownloader = .init()
     
     public var imageCacheCapacityInBytes: Int = 40.megabytesInBytes {
@@ -21,12 +21,20 @@ public final class ImageDownloader: ImageDownloading {
         }
     }
     
+    public lazy var session: URLSession = URLSession(configuration: urlSessionConfiguration)
+    
     public lazy var urlCache: URLCache = {
         return URLCache(
             memoryCapacity: 40.megabytesInBytes,
             diskCapacity: 250.megabytesInBytes,
             diskPath: "com.okcupid.imagedownloader"
         )
+    }()
+    
+    public lazy var imageCache: NSCache<NSURL, CachableContainer<UIImage>> = {
+        let imageCache = NSCache<NSURL, CachableContainer<UIImage>>()
+        imageCache.totalCostLimit = imageCacheCapacityInBytes
+        return imageCache
     }()
     
     public lazy var urlSessionConfiguration: URLSessionConfiguration = {
@@ -37,14 +45,6 @@ public final class ImageDownloader: ImageDownloading {
     }()
     
     // MARK: - Internal Properties
-    
-    lazy var session: URLSession = URLSession(configuration: urlSessionConfiguration)
-    
-    lazy var imageCache: NSCache<NSURL, CachableContainer<UIImage>> = {
-        let imageCache = NSCache<NSURL, CachableContainer<UIImage>>()
-        imageCache.totalCostLimit = imageCacheCapacityInBytes
-        return imageCache
-    }()
     
     let synchronizationQueue: DispatchQueue = {
         let name = String(format: "com.okcupid.imagedownloader.synchronizationqueue-%08x%08x", arc4random(), arc4random())
@@ -147,7 +147,7 @@ public final class ImageDownloader: ImageDownloading {
         return false
     }
     
-    func complete(url: URL, receipt: ImageDownloaderReceipt?, dataResponse: DataResponse<UIImage>) {
+    func complete(url: URL, receipt: ImageDownloaderReceipt?, dataResponse: Result<UIImage, ImageDownloaderError>) {
         let completionHandlersAndReceipts: [(completionHandler: CompletionHandler, imageDownloadReceipt: ImageDownloaderReceipt)]
         
         if let receipt = receipt, let completionHandlerForReceipt = currentCompletionHandlers[url]?[receipt] {
@@ -172,9 +172,9 @@ public final class ImageDownloader: ImageDownloading {
         }
     }
     
-    func processSuccessfulResponse(url: URL, image: UIImage?, error: Error?) {
+    func processSuccessfulResponse(url: URL, image: UIImage?, error: ImageDownloaderError?) {
         imageProcessingQueue.async {
-            let dataResponse: DataResponse<UIImage>
+            let dataResponse: Result<UIImage, ImageDownloaderError>
             
             defer {
                 self.synchronizationQueue.sync {

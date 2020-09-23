@@ -1,6 +1,6 @@
 //
 //  ImageDownloaderRequestTests.swift
-//  OKImageDownloader_Example
+//  OKImageDownloader
 //
 //  Created by Jordan Guggenheim on 9/20/18.
 //  Copyright © 2018 OkCupid. All rights reserved.
@@ -200,8 +200,8 @@ final class ImageDownloaderTests: XCTestCase {
         MockAsyncUrlProtocol.deadline = 0
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case let .failure(error) = dataResponse, let imageError = error as? ImageDownloaderError {
-                XCTAssertEqual(imageError, ImageDownloaderError.dataInvalid)
+            if case let .failure(error) = dataResponse {
+                XCTAssertEqual(error, ImageDownloaderError.dataInvalid)
                 expectation.fulfill()
                 
             } else {
@@ -225,8 +225,8 @@ final class ImageDownloaderTests: XCTestCase {
         MockAsyncUrlProtocol.deadline = 0
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case let .failure(error) = dataResponse, let imageError = error as? ImageDownloaderError {
-                XCTAssertEqual(imageError, ImageDownloaderError.cancelled)
+            if case let .failure(error) = dataResponse {
+                XCTAssertEqual(error, ImageDownloaderError.cancelled)
                 expectation.fulfill()
                 
             } else {
@@ -254,8 +254,8 @@ final class ImageDownloaderTests: XCTestCase {
         let expectedClosureCallCount = 2
         
         let firstCompletionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case let .failure(error) = dataResponse, let imageError = error as? ImageDownloaderError {
-                XCTAssertEqual(imageError, ImageDownloaderError.cancelled)
+            if case let .failure(error) = dataResponse {
+                XCTAssertEqual(error, ImageDownloaderError.cancelled)
                 
                 actualClosureCallCount += 1
                 
