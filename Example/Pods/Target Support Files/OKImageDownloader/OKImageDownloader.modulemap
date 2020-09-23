@@ -1,6 +1,0 @@
-framework module OKImageDownloader {
-  umbrella header "OKImageDownloader-umbrella.h"
-
-  export *
-  module * { export * }
-}
