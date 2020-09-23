@@ -6,14 +6,16 @@
 //
 
 import UIKit
+import OKImageDownloader
 
-class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+final class ViewController: UIViewController {
+    
+    @IBOutlet private weak var imageView: UIImageView!
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        imageView.ok.downloadImage(with: URL(string: "https://www.gstatic.com/webp/gallery/4.sm.webp")!, completionHandler: nil)
     }
-
-
 }
 
