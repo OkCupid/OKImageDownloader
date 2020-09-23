@@ -283,9 +283,12 @@ final class ImageDownloaderTests: XCTestCase {
         let imageViewOne = UIImageView()
         let imageViewTwo = UIImageView()
         
-        imageDownloader.download(url: url, receiptHandler: imageViewOne, completionHandler: firstCompletionHandler)
-        imageDownloader.download(url: url, receiptHandler: imageViewTwo, completionHandler: secondCompletionHandler)
-        imageDownloader.cancel(url: url, receipt: imageViewOne.imageDownloaderReceipt)
+        imageDownloader.download(url: url, receiptHandler: imageViewOne.ok, completionHandler: firstCompletionHandler)
+        imageDownloader.download(url: url, receiptHandler: imageViewTwo.ok, completionHandler: secondCompletionHandler)
+        
+        XCTAssertNotEqual(imageViewOne.ok.imageDownloaderReceipt, imageViewTwo.ok.imageDownloaderReceipt)
+        
+        imageDownloader.cancel(url: url, receipt: imageViewOne.ok.imageDownloaderReceipt)
         
         wait(for: [expectation], timeout: 20)
     }
@@ -356,7 +359,6 @@ final class ImageDownloaderTests: XCTestCase {
         let completionHandler: ImageDownloader.CompletionHandler = { response, _ in
             if case let .success(actualImage) = response {
                 XCTAssertEqual(actualImage, self.expectedImage)
-                XCTAssertTrue(isImageInCache)
                 
             } else {
                 XCTFail()
@@ -367,7 +369,7 @@ final class ImageDownloaderTests: XCTestCase {
         
         isImageInCache = imageDownloader.checkForImageInCacheAndCompleteIfNeeded(with: url, receipt: receipt, completionHandler: completionHandler)
         
-        wait(for: [expectation], timeout: 20)
+        XCTAssertTrue(isImageInCache)
     }
     
     func test_checkForImageInCacheAndCompleteIfNeeded_whenNoCachedImage_itReturnsFalseAndDoesNotFireCompletionHandler() {

@@ -36,11 +36,11 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             return (HTTPURLResponse(), self.expectedImageData)
         }
         
-        XCTAssertNil(imageView.imageDownloaderReceipt?.url)
+        XCTAssertNil(imageView.ok.imageDownloaderReceipt?.url)
         
-        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
         
-        XCTAssertNotNil(imageView.imageDownloaderReceipt?.url)
+        XCTAssertNotNil(imageView.ok.imageDownloaderReceipt?.url)
     }
     
     func test_downloadImage_whenSuccessAndCompletionHandler_itForwardsCompletionHandler() {
@@ -62,7 +62,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
+        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
         wait(for: [expectation], timeout: 20)
     }
@@ -86,7 +86,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
+        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
         wait(for: [expectation], timeout: 20)
     }
@@ -99,7 +99,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         XCTAssertNil(imageView.image)
         
-        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
@@ -112,7 +112,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
     }
     
     func test_downloadImage_whenFailureAndNoCompletionHandler_itDoesNotSetTheImage() {
-        imageView.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        imageView.ok.downloadImage(with: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         XCTAssertNil(imageView.image)
     }

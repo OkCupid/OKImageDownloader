@@ -103,11 +103,6 @@ public final class ImageDownloader: ImageDownloading {
     
     public func cancel(url: URL, receipt: ImageDownloaderReceipt? = nil) {
         synchronizationQueue.sync {
-            
-            if activeCompletionHandlers(for: url) == 1 {
-                currentLoaders[url]?.cancel()
-            }
-            
             complete(url: url, receipt: receipt, dataResponse: .failure(ImageDownloaderError.cancelled))
         }
     }
@@ -168,6 +163,7 @@ public final class ImageDownloader: ImageDownloading {
         }
         
         if activeCompletionHandlers(for: url) == 0 {
+            currentLoaders[url]?.cancel()
             currentLoaders[url] = nil
         }
         
@@ -196,7 +192,7 @@ public final class ImageDownloader: ImageDownloading {
                 return
             }
             
-            let imageCost: Int = image.jpegData(compressionQuality: 1)?.count ?? 0
+            let imageCost: Int = image.pngData()?.count ?? 0
             self.imageCache.setObject(CachableContainer(object: image), forKey: url as NSURL, cost: imageCost)
             
             dataResponse = .success(image)
