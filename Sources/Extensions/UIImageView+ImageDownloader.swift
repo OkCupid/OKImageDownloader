@@ -8,24 +8,7 @@
 
 import UIKit
 
-public extension UIImageView {
-    
-    private struct AssociatedKey {
-        static var imageDownloaderReceipt = "ok_UIImageView.ImageDownloaderReceipt"
-    }
-    
-    var imageDownloaderReceipt: ImageDownloaderReceipt? {
-        get {
-            if let imageDownloaderReceipt = objc_getAssociatedObject(self, &AssociatedKey.imageDownloaderReceipt) as? ImageDownloaderReceipt {
-                return imageDownloaderReceipt
-            } else {
-                return nil
-            }
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKey.imageDownloaderReceipt, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
+public extension ObjectWrapper where T: UIImageView {
     
     func downloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler?) {
         cancelDownloadImage()
@@ -34,7 +17,9 @@ public extension UIImageView {
             guard let completionHandler = completionHandler else {
                 switch dataResponse {
                 case let .success(image):
-                    self.image = image
+                    DispatchQueue.executeAsyncOnMain {
+                        self.object.image = image
+                    }
                     
                 case .failure:
                     break
@@ -61,4 +46,4 @@ public extension UIImageView {
     
 }
 
-extension UIImageView: ImageDownloaderReceiptHandling {}
+extension UIImageView: OKImageDownloaderCompatible{}

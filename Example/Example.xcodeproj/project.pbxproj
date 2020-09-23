@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		17A1ED4D251ACE8100B1A7BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17A1ED4B251ACE8100B1A7BC /* Main.storyboard */; };
 		17A1ED4F251ACE8200B1A7BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17A1ED4E251ACE8200B1A7BC /* Assets.xcassets */; };
 		17A1ED52251ACE8200B1A7BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17A1ED50251ACE8200B1A7BC /* LaunchScreen.storyboard */; };
+		17DDFFD3251BE7A20082073F /* OKImageDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 17DDFFD2251BE7A20082073F /* OKImageDownloader */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17DDFFD3251BE7A20082073F /* OKImageDownloader in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +44,7 @@
 			children = (
 				17A1ED44251ACE8100B1A7BC /* Example */,
 				17A1ED43251ACE8100B1A7BC /* Products */,
+				17DDFFD1251BE7A20082073F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +70,13 @@
 			path = Example;
 			sourceTree = "<group>";
 		};
+		17DDFFD1251BE7A20082073F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -83,6 +93,9 @@
 			dependencies = (
 			);
 			name = Example;
+			packageProductDependencies = (
+				17DDFFD2251BE7A20082073F /* OKImageDownloader */,
+			);
 			productName = Example;
 			productReference = 17A1ED42251ACE8100B1A7BC /* Example.app */;
 			productType = "com.apple.product-type.application";
@@ -293,6 +306,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=100 -Xfrontend -warn-long-function-bodies=100 -Xfrontend -debug-time-function-bodies";
 				PRODUCT_BUNDLE_IDENTIFIER = com.okcupid.okimagedownloader.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -341,6 +355,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		17DDFFD2251BE7A20082073F /* OKImageDownloader */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OKImageDownloader;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 17A1ED3A251ACE8100B1A7BC /* Project object */;
 }

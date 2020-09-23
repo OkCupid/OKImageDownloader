@@ -13,7 +13,7 @@ public final class ImageDownloader: ImageDownloading {
     // MARK: - Public Properties
     
     public typealias CompletionHandler = (_ dataResponse: DataResponse<UIImage>, _ downloadReceipt: ImageDownloaderReceipt) -> Void
-    public static let shared = ImageDownloader()
+    public static let shared: ImageDownloader = .init()
     
     public var imageCacheCapacityInBytes: Int = 40.megabytesInBytes {
         didSet {
@@ -48,7 +48,12 @@ public final class ImageDownloader: ImageDownloading {
     
     let synchronizationQueue: DispatchQueue = {
         let name = String(format: "com.okcupid.imagedownloader.synchronizationqueue-%08x%08x", arc4random(), arc4random())
-        return DispatchQueue(label: name)
+        return .init(label: name)
+    }()
+    
+    let imageProcessingQueue: DispatchQueue = {
+        let name = String(format: "com.okcupid.imagedownloader.imageProcessingQueue-%08x%08x", arc4random(), arc4random())
+        return .init(label: name, qos: .userInteractive)
     }()
     
     lazy var currentLoaders = [URL: APIUrlLoader<ImageDownloaderRequest>]()
@@ -70,20 +75,20 @@ public final class ImageDownloader: ImageDownloading {
     // MARK: - Downloading
     
     public func download(url: URL, receiptHandler: ImageDownloaderReceiptHandling? = nil, completionHandler: @escaping CompletionHandler) {
-        let receipt = ImageDownloaderReceipt(id: UUID(), url: url)
+        let receipt: ImageDownloaderReceipt = .init(id: UUID(), url: url)
         receiptHandler?.imageDownloaderReceipt = receipt
         
+        guard !checkForImageInCacheAndCompleteIfNeeded(with: url, receipt: receipt, completionHandler: completionHandler) else {
+            return
+        }
+        
         synchronizationQueue.sync {
-            guard !checkForImageInCacheAndCompleteIfNeeded(with: url, receipt: receipt, completionHandler: completionHandler) else {
-                return
-            }
-            
             guard !checkForCurrentLoaderInProgressAndAppendCompletionIfNeeded(with: url, receipt: receipt, completionHandler: completionHandler) else {
                 return
             }
             
-            let request = ImageDownloaderRequest(url: url)
-            let loader = APIUrlLoader<ImageDownloaderRequest>(apiRequest: request, urlSession: session)
+            let request: ImageDownloaderRequest = .init(url: url)
+            let loader: APIUrlLoader<ImageDownloaderRequest> = .init(apiRequest: request, urlSession: session)
             
             currentCompletionHandlers[url] = [receipt: completionHandler]
             currentLoaders[url] = loader
@@ -98,11 +103,6 @@ public final class ImageDownloader: ImageDownloading {
     
     public func cancel(url: URL, receipt: ImageDownloaderReceipt? = nil) {
         synchronizationQueue.sync {
-            
-            if activeCompletionHandlers(for: url) == 1 {
-                currentLoaders[url]?.cancel()
-            }
-            
             complete(url: url, receipt: receipt, dataResponse: .failure(ImageDownloaderError.cancelled))
         }
     }
@@ -116,18 +116,18 @@ public final class ImageDownloader: ImageDownloading {
     // MARK: - Internal Helpers
     
     func activeCompletionHandlers(for url: URL) -> Int {
-        let completionHandlers = currentCompletionHandlers[url]?.keys.compactMap { currentCompletionHandlers[url]?[$0] } ?? []
+        let completionHandlers: [CompletionHandler] = currentCompletionHandlers[url]?.keys.compactMap { currentCompletionHandlers[url]?[$0] } ?? []
         return completionHandlers.count
     }
     
     func checkForCurrentLoaderInProgressAndAppendCompletionIfNeeded(with url: URL, receipt: ImageDownloaderReceipt, completionHandler: @escaping CompletionHandler) -> Bool {
         if currentLoaders[url] != nil {
-            if var receiptDictionary = currentCompletionHandlers[url] {
+            if var receiptDictionary: [ImageDownloaderReceipt : CompletionHandler] = currentCompletionHandlers[url] {
                 receiptDictionary[receipt] = completionHandler
                 currentCompletionHandlers[url] = receiptDictionary
                 
             } else {
-                let receiptDictionary = [receipt: completionHandler]
+                let receiptDictionary: [ImageDownloaderReceipt : CompletionHandler] = [receipt: completionHandler]
                 currentCompletionHandlers[url] = receiptDictionary
             }
             
@@ -138,11 +138,8 @@ public final class ImageDownloader: ImageDownloading {
     }
     
     func checkForImageInCacheAndCompleteIfNeeded(with url: URL, receipt: ImageDownloaderReceipt, completionHandler: @escaping CompletionHandler) -> Bool {
-        if let imageCachableContainer = imageCache.object(forKey: url as NSURL) {
-            
-            DispatchQueue.main.async {
-                completionHandler(.success(imageCachableContainer.object), receipt)
-            }
+        if let imageCachableContainer: CachableContainer<UIImage> = imageCache.object(forKey: url as NSURL) {
+            completionHandler(.success(imageCachableContainer.object), receipt)
             
             return true
         }
@@ -166,6 +163,7 @@ public final class ImageDownloader: ImageDownloading {
         }
         
         if activeCompletionHandlers(for: url) == 0 {
+            currentLoaders[url]?.cancel()
             currentLoaders[url] = nil
         }
         
@@ -175,7 +173,7 @@ public final class ImageDownloader: ImageDownloading {
     }
     
     func processSuccessfulResponse(url: URL, image: UIImage?, error: Error?) {
-        DispatchQueue.global(qos: .background).async {
+        imageProcessingQueue.async {
             let dataResponse: DataResponse<UIImage>
             
             defer {
@@ -194,7 +192,7 @@ public final class ImageDownloader: ImageDownloading {
                 return
             }
             
-            let imageCost = image.jpegData(compressionQuality: 1)?.count ?? 0
+            let imageCost: Int = image.pngData()?.count ?? 0
             self.imageCache.setObject(CachableContainer(object: image), forKey: url as NSURL, cost: imageCost)
             
             dataResponse = .success(image)
