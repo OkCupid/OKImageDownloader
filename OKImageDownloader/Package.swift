@@ -14,10 +14,12 @@ let package = Package(
         .target(
             name: "OKImageDownloader",
             dependencies: [],
-            path: "Sources"),
+            path: "Sources",
+            exclude: ["Example"]),
         .testTarget(
             name: "OKImageDownloaderTests",
             dependencies: ["OKImageDownloader"],
-            path: "Tests"),
+            path: "Tests",
+            exclude: ["Example"]),
     ]
 )

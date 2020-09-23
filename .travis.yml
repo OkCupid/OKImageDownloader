@@ -8,4 +8,4 @@ env:
   - DESTINATION='platform=iOS Simulator,name=iPhone 11 Pro,OS=14.0'
 
 script:
-  - swift package update && xcodebuild test -scheme OKImageDownloader -destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=14.0'
+  - cd OKImageDownloader/ && swift package update && xcodebuild test -scheme OKImageDownloader -destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=14.0'
