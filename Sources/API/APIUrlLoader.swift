@@ -21,6 +21,10 @@ final class APIUrlLoader<T: APIRequest> {
     
     func load(completionHandler: @escaping ((T.ResponseDataType?, ImageDownloaderError?) -> Void)) {
         task = urlSession.dataTask(with: apiRequest.url) { (data, response, error) in
+            if let error = (error as NSError?) {
+                return completionHandler(nil, ImageDownloaderError.error(error))
+            }
+            
             guard let data = data else {
                 return completionHandler(nil, ImageDownloaderError.dataMissing)
             }

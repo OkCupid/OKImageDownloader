@@ -8,8 +8,9 @@
 
 import Foundation
 
-public enum ImageDownloaderError: Error {
+public enum ImageDownloaderError: Error, Equatable {
     case cancelled
     case dataInvalid
     case dataMissing
+    case error(NSError)
 }
