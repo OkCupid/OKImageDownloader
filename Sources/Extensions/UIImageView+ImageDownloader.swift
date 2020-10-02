@@ -10,7 +10,9 @@ import UIKit
 
 public extension ObjectWrapper where T: UIImageView {
     
-    func downloadImage(with url: URL, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler? = nil) {
+    func downloadImage(with url: URL,
+                       imageDownloader: ImageDownloading = ImageDownloader.shared,
+                       completionHandler: ImageDownloader.CompletionHandler? = nil) {
         cancelImageDownload()
         
         imageDownloader.download(url: url, receiptHandler: self) { dataResponse, downloadReceipt in

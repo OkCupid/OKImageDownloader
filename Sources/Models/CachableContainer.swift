@@ -8,25 +8,25 @@
 
 import Foundation
 
-public final class CachableContainer<T>: NSDiscardableContent {
+final class CachableContainer<T>: NSDiscardableContent {
     
-    public let object: T
+    let object: T
     
-    public init(object: T) {
+    init(object: T) {
         self.object = object
     }
     
     // MARK: - NSDiscardableContent
     
-    public func beginContentAccess() -> Bool {
+    func beginContentAccess() -> Bool {
         return true
     }
     
-    public func endContentAccess() {}
+    func endContentAccess() {}
     
-    public func discardContentIfPossible() {}
+    func discardContentIfPossible() {}
     
-    public func isContentDiscarded() -> Bool {
+    func isContentDiscarded() -> Bool {
         return false
     }
 }

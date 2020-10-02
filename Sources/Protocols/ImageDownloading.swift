@@ -5,7 +5,7 @@
 //  Created by Jordan Guggenheim on 10/22/18.
 //
 
-import Foundation
+import UIKit
 
 public protocol ImageDownloading: class {
     var imageMemoryCacheCapacityInBytes: Int { get }
@@ -13,6 +13,6 @@ public protocol ImageDownloading: class {
     var urlSessionConfiguration: URLSessionConfiguration { get }
     
     func download(url: URL, receiptHandler: ImageDownloaderReceiptHandling?, completionHandler: @escaping ImageDownloader.CompletionHandler)
-    
+    func cachedImage(url: URL) -> UIImage?
     func cancel(url: URL, receipt: ImageDownloaderReceipt?)
 }
