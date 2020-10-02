@@ -31,12 +31,6 @@ public final class ImageDownloader: ImageDownloading {
         )
     }()
     
-    public lazy var imageMemoryCache: NSCache<NSURL, CachableContainer<UIImage>> = {
-        let imageCache = NSCache<NSURL, CachableContainer<UIImage>>()
-        imageCache.totalCostLimit = imageMemoryCacheCapacityInBytes
-        return imageCache
-    }()
-    
     public lazy var urlSessionConfiguration: URLSessionConfiguration = {
         let configuration = URLSessionConfiguration.default
         configuration.requestCachePolicy = .returnCacheDataElseLoad
@@ -58,6 +52,12 @@ public final class ImageDownloader: ImageDownloading {
     
     lazy var currentLoaders = [URL: APIUrlLoader<ImageDownloaderRequest>]()
     lazy var currentCompletionHandlers = [URL: [ImageDownloaderReceipt: CompletionHandler]]()
+    
+    lazy var imageMemoryCache: NSCache<NSURL, CachableContainer<UIImage>> = {
+        let imageCache = NSCache<NSURL, CachableContainer<UIImage>>()
+        imageCache.totalCostLimit = imageMemoryCacheCapacityInBytes
+        return imageCache
+    }()
     
     private let notificationCenter: NotificationCenter
     
@@ -97,6 +97,12 @@ public final class ImageDownloader: ImageDownloading {
                 self?.processSuccessfulResponse(url: url, image: image, error: error)
             } 
         }
+    }
+    
+    // MARK - Cached
+    
+    public func cachedImage(url: URL) -> UIImage? {
+        return imageMemoryCache.object(forKey: url as NSURL)?.object
     }
     
     // MARK: - Cancelling

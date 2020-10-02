@@ -10,7 +10,10 @@ import UIKit
 
 public extension ObjectWrapper where T: UIButton {
     
-    func downloadImage(with url: URL, for state: UIControl.State = .normal, imageDownloader: ImageDownloading = ImageDownloader.shared, completionHandler: ImageDownloader.CompletionHandler? = nil) {
+    func downloadImage(with url: URL,
+                       for state: UIControl.State = .normal,
+                       imageDownloader: ImageDownloading = ImageDownloader.shared,
+                       completionHandler: ImageDownloader.CompletionHandler? = nil) {
         cancelImageDownload()
         
         imageDownloader.download(url: url, receiptHandler: self) { dataResponse, downloadReceipt in
