@@ -15,9 +15,9 @@ public final class ImageDownloader: ImageDownloading {
     public typealias CompletionHandler = (_ dataResponse: Result<UIImage, ImageDownloaderError>, _ downloadReceipt: ImageDownloaderReceipt) -> Void
     public static let shared: ImageDownloader = .init()
     
-    public var imageCacheCapacityInBytes: Int = 40.megabytesInBytes {
+    public var imageMemoryCacheCapacityInBytes: Int = 40.megabytesInBytes {
         didSet {
-            imageCache.totalCostLimit = imageCacheCapacityInBytes
+            imageMemoryCache.totalCostLimit = imageMemoryCacheCapacityInBytes
         }
     }
     
@@ -31,9 +31,9 @@ public final class ImageDownloader: ImageDownloading {
         )
     }()
     
-    public lazy var imageCache: NSCache<NSURL, CachableContainer<UIImage>> = {
+    public lazy var imageMemoryCache: NSCache<NSURL, CachableContainer<UIImage>> = {
         let imageCache = NSCache<NSURL, CachableContainer<UIImage>>()
-        imageCache.totalCostLimit = imageCacheCapacityInBytes
+        imageCache.totalCostLimit = imageMemoryCacheCapacityInBytes
         return imageCache
     }()
     
@@ -48,7 +48,7 @@ public final class ImageDownloader: ImageDownloading {
     
     let synchronizationQueue: DispatchQueue = {
         let name = String(format: "com.okcupid.imagedownloader.synchronizationqueue-%08x%08x", arc4random(), arc4random())
-        return .init(label: name)
+        return .init(label: name, qos: .userInteractive)
     }()
     
     let imageProcessingQueue: DispatchQueue = {
@@ -110,7 +110,7 @@ public final class ImageDownloader: ImageDownloading {
     // MARK: - Notifications
     
     @objc func didReceiveMemoryWarning() {
-        imageCache.removeAllObjects()
+        imageMemoryCache.removeAllObjects()
     }
     
     // MARK: - Internal Helpers
@@ -122,12 +122,12 @@ public final class ImageDownloader: ImageDownloading {
     
     func checkForCurrentLoaderInProgressAndAppendCompletionIfNeeded(with url: URL, receipt: ImageDownloaderReceipt, completionHandler: @escaping CompletionHandler) -> Bool {
         if currentLoaders[url] != nil {
-            if var receiptDictionary: [ImageDownloaderReceipt : CompletionHandler] = currentCompletionHandlers[url] {
+            if var receiptDictionary: [ImageDownloaderReceipt: CompletionHandler] = currentCompletionHandlers[url] {
                 receiptDictionary[receipt] = completionHandler
                 currentCompletionHandlers[url] = receiptDictionary
                 
             } else {
-                let receiptDictionary: [ImageDownloaderReceipt : CompletionHandler] = [receipt: completionHandler]
+                let receiptDictionary: [ImageDownloaderReceipt: CompletionHandler] = [receipt: completionHandler]
                 currentCompletionHandlers[url] = receiptDictionary
             }
             
@@ -138,7 +138,7 @@ public final class ImageDownloader: ImageDownloading {
     }
     
     func checkForImageInCacheAndCompleteIfNeeded(with url: URL, receipt: ImageDownloaderReceipt, completionHandler: @escaping CompletionHandler) -> Bool {
-        if let imageCachableContainer: CachableContainer<UIImage> = imageCache.object(forKey: url as NSURL) {
+        if let imageCachableContainer: CachableContainer<UIImage> = imageMemoryCache.object(forKey: url as NSURL) {
             completionHandler(.success(imageCachableContainer.object), receipt)
             
             return true
@@ -198,7 +198,7 @@ public final class ImageDownloader: ImageDownloading {
             }
             
             let imageCost: Int = image.pngData()?.count ?? 0
-            self.imageCache.setObject(CachableContainer(object: image), forKey: url as NSURL, cost: imageCost)
+            self.imageMemoryCache.setObject(CachableContainer(object: image), forKey: url as NSURL, cost: imageCost)
             
             dataResponse = .success(image)
         }
