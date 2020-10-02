@@ -150,19 +150,24 @@ public final class ImageDownloader: ImageDownloading {
     func complete(url: URL, receipt: ImageDownloaderReceipt?, dataResponse: Result<UIImage, ImageDownloaderError>) {
         let completionHandlersAndReceipts: [(completionHandler: CompletionHandler, imageDownloadReceipt: ImageDownloaderReceipt)]
         
+        var shouldCancelLoader: Bool = false
+        
         if let receipt = receipt, let completionHandlerForReceipt = currentCompletionHandlers[url]?[receipt] {
             completionHandlersAndReceipts = [(completionHandlerForReceipt, receipt)]
             currentCompletionHandlers[url]?[receipt] = nil
+            shouldCancelLoader = currentCompletionHandlers[url]?.keys.count == 0
             
         } else if let completionHandlersAndReceiptsForUrl = currentCompletionHandlers[url] {
             completionHandlersAndReceipts = completionHandlersAndReceiptsForUrl.compactMap { ($1, $0) }
             currentCompletionHandlers[url] = nil
+            shouldCancelLoader = true
             
         } else {
             completionHandlersAndReceipts = []
+            shouldCancelLoader = true
         }
         
-        if activeCompletionHandlers(for: url) == 0 {
+        if shouldCancelLoader {
             currentLoaders[url]?.cancel()
             currentLoaders[url] = nil
         }

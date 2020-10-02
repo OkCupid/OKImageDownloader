@@ -253,9 +253,12 @@ final class ImageDownloaderTests: XCTestCase {
         var actualClosureCallCount = 0
         let expectedClosureCallCount = 2
         
-        let firstCompletionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
+        let firstCompletionHandler: ImageDownloader.CompletionHandler = { [weak self] dataResponse, _ in
+            guard let self = self else { return XCTFail() }
+            
             if case let .failure(error) = dataResponse {
                 XCTAssertEqual(error, ImageDownloaderError.cancelled)
+                XCTAssertNotNil(self.imageDownloader.currentLoaders[self.url])
                 
                 actualClosureCallCount += 1
                 
@@ -271,6 +274,7 @@ final class ImageDownloaderTests: XCTestCase {
         let secondCompletionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case .success = dataResponse {
                 actualClosureCallCount += 1
+                XCTAssertNil(self.imageDownloader.currentLoaders[self.url])
                 
                 if actualClosureCallCount == expectedClosureCallCount {
                     expectation.fulfill()
