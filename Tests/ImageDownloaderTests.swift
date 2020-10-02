@@ -41,13 +41,13 @@ final class ImageDownloaderTests: XCTestCase {
         MockAsyncUrlProtocol.deadline = 1
     }
     
-    func test_imageCacheCapacityInBytes_itSetsTheDefault() {
-        XCTAssertEqual(imageDownloader.imageCacheCapacityInBytes, 41943040)
+    func test_imageMemoryCacheCapacityInBytes_itSetsTheDefault() {
+        XCTAssertEqual(imageDownloader.imageMemoryCacheCapacityInBytes, 41943040)
     }
     
-    func test_imageCacheCapacityInBytes_whenSet_itUpdatesImageCacheTotalCostLimit() {
-        imageDownloader.imageCacheCapacityInBytes = 40
-        XCTAssertEqual(imageDownloader.imageCache.totalCostLimit, 40)
+    func test_imageMemoryCacheCapacityInBytes_whenSet_itUpdatesimageMemoryCacheTotalCostLimit() {
+        imageDownloader.imageMemoryCacheCapacityInBytes = 40
+        XCTAssertEqual(imageDownloader.imageMemoryCache.totalCostLimit, 40)
     }
     
     func test_urlSessionConfiguration_itSetsTheCachePolicy() {
@@ -58,13 +58,13 @@ final class ImageDownloaderTests: XCTestCase {
         XCTAssertTrue(imageDownloader.urlSessionConfiguration.urlCache === imageDownloader.urlCache)
     }
     
-    func test_imageCache_itSetsTheDefaultTotalCostLimit() {
-        XCTAssertEqual(imageDownloader.imageCache.totalCostLimit, 41943040)
+    func test_imageMemoryCache_itSetsTheDefaultTotalCostLimit() {
+        XCTAssertEqual(imageDownloader.imageMemoryCache.totalCostLimit, 41943040)
     }
     
     func test_download_whenImageIsInCache_itReturnsImage() {
         let cachableContainer = CachableContainer<UIImage>(object: expectedImage)
-        imageDownloader.imageCache.setObject(cachableContainer, forKey: url as NSURL)
+        imageDownloader.imageMemoryCache.setObject(cachableContainer, forKey: url as NSURL)
         
         let expectation = XCTestExpectation(description: "Image Downloader Success Response")
         
@@ -142,7 +142,7 @@ final class ImageDownloaderTests: XCTestCase {
         
         let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
             if case .success = dataResponse {
-                XCTAssertNotNil(self.imageDownloader.imageCache.object(forKey: self.url as NSURL))
+                XCTAssertNotNil(self.imageDownloader.imageMemoryCache.object(forKey: self.url as NSURL))
                 
                 expectation.fulfill()
                 
@@ -293,15 +293,15 @@ final class ImageDownloaderTests: XCTestCase {
         wait(for: [expectation], timeout: 20)
     }
 
-    func test_didReceiveMemoryWarning_itClearsTheImageCache() {
+    func test_didReceiveMemoryWarning_itClearsTheimageMemoryCache() {
         let cachableContainer = CachableContainer<UIImage>(object: expectedImage)
-        imageDownloader.imageCache.setObject(cachableContainer, forKey: url as NSURL)
+        imageDownloader.imageMemoryCache.setObject(cachableContainer, forKey: url as NSURL)
         
-        XCTAssertNotNil(imageDownloader.imageCache.object(forKey: url as NSURL))
+        XCTAssertNotNil(imageDownloader.imageMemoryCache.object(forKey: url as NSURL))
         
         notificationCenter.post(name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
         
-        XCTAssertNil(imageDownloader.imageCache.object(forKey: url as NSURL))
+        XCTAssertNil(imageDownloader.imageMemoryCache.object(forKey: url as NSURL))
     }
     
     func test_activeCompletionHandlers_whenNoHandlers_itReturnsZero() {
@@ -350,7 +350,7 @@ final class ImageDownloaderTests: XCTestCase {
     
     func test_checkForImageInCacheAndCompleteIfNeeded_whenCachedImage_itReturnsTrueAndFiresCompletionHandler() {
         let cachableContainer = CachableContainer<UIImage>(object: expectedImage)
-        imageDownloader.imageCache.setObject(cachableContainer, forKey: url as NSURL)
+        imageDownloader.imageMemoryCache.setObject(cachableContainer, forKey: url as NSURL)
         
         let expectation = XCTestExpectation(description: "Image Downloader Success Response")
         

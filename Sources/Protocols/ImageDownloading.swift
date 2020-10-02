@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol ImageDownloading: class {
-    var imageCacheCapacityInBytes: Int { get }
+    var imageMemoryCacheCapacityInBytes: Int { get }
     var urlCache: URLCache { get }
     var urlSessionConfiguration: URLSessionConfiguration { get }
     
