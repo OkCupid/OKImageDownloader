@@ -3,7 +3,7 @@
 //  OkImageDownloader
 //
 //  Created by Jordan Guggenheim on 8/28/18.
-//  Copyright © 2018 OkCupid. All rights reserved.
+//  Copyright © 2020 OkCupid. All rights reserved.
 //
 
 import UIKit
@@ -12,7 +12,7 @@ public final class ImageDownloader: ImageDownloading {
     
     // MARK: - Public Properties
     
-    public typealias CompletionHandler = (_ dataResponse: Result<UIImage, ImageDownloaderError>, _ downloadReceipt: ImageDownloaderReceipt) -> Void
+    public typealias CompletionHandler = (_ result: Result<UIImage, ImageDownloaderError>, _ downloadReceipt: ImageDownloaderReceipt) -> Void
     public static let shared: ImageDownloader = .init()
     
     public var imageMemoryCacheCapacityInBytes: Int = 40.megabytesInBytes {
@@ -93,8 +93,8 @@ public final class ImageDownloader: ImageDownloading {
             currentCompletionHandlers[url] = [receipt: completionHandler]
             currentLoaders[url] = loader
             
-            loader.load { [weak self] image, error in
-                self?.processSuccessfulResponse(url: url, image: image, error: error)
+            loader.load { [weak self] result in
+                self?.processSuccessfulResponse(url: url, result: result)
             } 
         }
     }
@@ -109,7 +109,7 @@ public final class ImageDownloader: ImageDownloading {
     
     public func cancel(url: URL, receipt: ImageDownloaderReceipt? = nil) {
         synchronizationQueue.sync {
-            complete(url: url, receipt: receipt, dataResponse: .failure(ImageDownloaderError.cancelled))
+            complete(url: url, receipt: receipt, result: .failure(.cancelled))
         }
     }
     
@@ -153,7 +153,7 @@ public final class ImageDownloader: ImageDownloading {
         return false
     }
     
-    func complete(url: URL, receipt: ImageDownloaderReceipt?, dataResponse: Result<UIImage, ImageDownloaderError>) {
+    func complete(url: URL, receipt: ImageDownloaderReceipt?, result: Result<UIImage, ImageDownloaderError>) {
         let completionHandlersAndReceipts: [(completionHandler: CompletionHandler, imageDownloadReceipt: ImageDownloaderReceipt)]
         
         var shouldCancelLoader: Bool = false
@@ -179,34 +179,24 @@ public final class ImageDownloader: ImageDownloading {
         }
         
         DispatchQueue.main.async {
-            completionHandlersAndReceipts.forEach { $0.completionHandler(dataResponse, $0.imageDownloadReceipt) }
+            completionHandlersAndReceipts.forEach { $0.completionHandler(result, $0.imageDownloadReceipt) }
         }
     }
     
-    func processSuccessfulResponse(url: URL, image: UIImage?, error: ImageDownloaderError?) {
+    func processSuccessfulResponse(url: URL, result: Result<UIImage, ImageDownloaderError>) {
         imageProcessingQueue.async {
-            let dataResponse: Result<UIImage, ImageDownloaderError>
+            switch result {
+            case .success(let image):
+                let imageCost: Int = image.pngData()?.count ?? 0
+                self.imageMemoryCache.setObject(CachableContainer(object: image), forKey: url as NSURL, cost: imageCost)
             
-            defer {
-                self.synchronizationQueue.sync {
-                    self.complete(url: url, receipt: nil, dataResponse: dataResponse)
-                }
+            case .failure:
+                break
             }
             
-            if let error = error {
-                dataResponse = .failure(error)
-                return
+            self.synchronizationQueue.sync {
+                self.complete(url: url, receipt: nil, result: result)
             }
-            
-            guard let image = image else {
-                dataResponse = .failure(ImageDownloaderError.dataInvalid)
-                return
-            }
-            
-            let imageCost: Int = image.pngData()?.count ?? 0
-            self.imageMemoryCache.setObject(CachableContainer(object: image), forKey: url as NSURL, cost: imageCost)
-            
-            dataResponse = .success(image)
         }
     }
     

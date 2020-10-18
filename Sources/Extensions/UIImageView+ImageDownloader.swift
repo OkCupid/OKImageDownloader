@@ -3,7 +3,7 @@
 //  OkCupid
 //
 //  Created by Jordan Guggenheim on 9/5/18.
-//  Copyright © 2018 OkCupid. All rights reserved.
+//  Copyright © 2020 OkCupid. All rights reserved.
 //
 
 import UIKit
@@ -15,10 +15,10 @@ public extension ObjectWrapper where T: UIImageView {
                        completionHandler: ImageDownloader.CompletionHandler? = nil) {
         cancelImageDownload()
         
-        imageDownloader.download(url: url, receiptHandler: self) { dataResponse, downloadReceipt in
+        imageDownloader.download(url: url, receiptHandler: self) { result, downloadReceipt in
             guard let completionHandler = completionHandler else {
-                switch dataResponse {
-                case let .success(image):
+                switch result {
+                case .success(let image):
                     DispatchQueue.executeAsyncOnMain {
                         self.object.image = image
                     }
@@ -30,7 +30,7 @@ public extension ObjectWrapper where T: UIImageView {
                 return
             }
             
-            completionHandler(dataResponse, downloadReceipt)
+            completionHandler(result, downloadReceipt)
         }
     }
     

@@ -3,7 +3,7 @@
 //  OkImageDownloader
 //
 //  Created by Jordan Guggenheim on 8/28/18.
-//  Copyright © 2018 Jordan Guggenheim. All rights reserved.
+//  Copyright © 2020 Jordan Guggenheim. All rights reserved.
 //
 
 import Foundation

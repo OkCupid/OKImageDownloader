@@ -3,7 +3,7 @@
 //  OKImageDownloader
 //
 //  Created by Jordan Guggenheim on 9/20/18.
-//  Copyright © 2018 OkCupid. All rights reserved.
+//  Copyright © 2020 OkCupid. All rights reserved.
 //
 
 import XCTest
@@ -42,12 +42,20 @@ final class ImageDownloaderRequestTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successful Image Response")
         
-        loader.load { actualImage, error in
-            let actualImageData = actualImage!.jpegData(compressionQuality: 0)!
+        loader.load { result in
+            let actualImageData: Data
             
-            // Accuracy is needed as compresssing and decompressing the same image doesn't result in the same byte count 🙄
-            XCTAssertEqual(Double(actualImageData.count), Double(expectedImageData.count), accuracy: 300)
-            XCTAssertEqual(actualImage!.size, expectedImage.size)
+            switch result {
+            case .success(let actualImage):
+                actualImageData = actualImage.jpegData(compressionQuality: 0)!
+                // Accuracy is needed as compresssing and decompressing the same image doesn't result in the same byte count 🙄
+                XCTAssertEqual(Double(actualImageData.count), Double(expectedImageData.count), accuracy: 300)
+                XCTAssertEqual(actualImage.size, expectedImage.size)
+                
+            case .failure:
+                XCTFail()
+            }
+            
             expectation.fulfill()
         }
         
@@ -62,12 +70,13 @@ final class ImageDownloaderRequestTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Image Error Response")
         
-        loader.load { actualImage, error in
-            
-            if let error = error {
-                XCTAssertEqual(error, ImageDownloaderError.dataInvalid)
-            } else {
+        loader.load { result in
+            switch result {
+            case .success:
                 XCTFail()
+                
+            case .failure(let error):
+                XCTAssertEqual(error, .dataInvalid)
             }
             
             expectation.fulfill()

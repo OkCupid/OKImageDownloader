@@ -16,10 +16,10 @@ public extension ObjectWrapper where T: UIButton {
                        completionHandler: ImageDownloader.CompletionHandler? = nil) {
         cancelImageDownload()
         
-        imageDownloader.download(url: url, receiptHandler: self) { dataResponse, downloadReceipt in
+        imageDownloader.download(url: url, receiptHandler: self) { result, downloadReceipt in
             guard let completionHandler = completionHandler else {
-                switch dataResponse {
-                case let .success(image):
+                switch result {
+                case .success(let image):
                     DispatchQueue.executeAsyncOnMain {
                         self.object.setImage(image, for: state)
                     }
@@ -31,7 +31,7 @@ public extension ObjectWrapper where T: UIButton {
                 return
             }
             
-            completionHandler(dataResponse, downloadReceipt)
+            completionHandler(result, downloadReceipt)
         }
     }
     
