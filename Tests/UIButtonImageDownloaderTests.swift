@@ -3,7 +3,7 @@
 //  OKImageDownloader
 //
 //  Created by Jordan Guggenheim on 9/24/18.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Copyright © 2020 OkCupid. All rights reserved.
 //
 
 import XCTest
@@ -51,11 +51,12 @@ final class UIButtonImageDownloaderTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Image Downloader UIButton Success Response")
         
-        let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case let .success(actualImage) = dataResponse {
-                XCTAssertNotNil(actualImage)
-                
-            } else {
+        let completionHandler: ImageDownloader.CompletionHandler = { result, _ in
+            switch result {
+            case .success(let image):
+                XCTAssertNotNil(image)
+            
+            case .failure:
                 XCTFail()
             }
             
@@ -75,12 +76,13 @@ final class UIButtonImageDownloaderTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Image Downloader UIButton Success Response")
         
-        let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case let .failure(error) = dataResponse {
-                XCTAssertEqual(error, .dataInvalid)
-                
-            } else {
+        let completionHandler: ImageDownloader.CompletionHandler = { result, _ in
+            switch result {
+            case .success:
                 XCTFail()
+                
+            case .failure(let error):
+                XCTAssertEqual(error, .dataInvalid)
             }
             
             expectation.fulfill()

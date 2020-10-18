@@ -3,7 +3,7 @@
 //  OKImageDownloader
 //
 //  Created by Jordan Guggenheim on 9/20/18.
-//  Copyright © 2018 OkCupid. All rights reserved.
+//  Copyright © 2020 OkCupid. All rights reserved.
 //
 
 import XCTest
@@ -68,11 +68,12 @@ final class ImageDownloaderTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Image Downloader Success Response")
         
-        let completionHandler: ImageDownloader.CompletionHandler = { response, _ in
-            if case let .success(actualImage) = response {
+        let completionHandler: ImageDownloader.CompletionHandler = { result, _ in
+            switch result {
+            case .success(let actualImage):
                 XCTAssertEqual(actualImage, self.expectedImage)
                 
-            } else {
+            case .failure:
                 XCTFail()
             }
             
@@ -140,15 +141,16 @@ final class ImageDownloaderTests: XCTestCase {
         // No loaders
         XCTAssertNil(imageDownloader.currentLoaders[url])
         
-        let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case .success = dataResponse {
+        let completionHandler: ImageDownloader.CompletionHandler = { result, _ in
+            switch result {
+            case .success:
                 XCTAssertNotNil(self.imageDownloader.imageMemoryCache.object(forKey: self.url as NSURL))
                 
-                expectation.fulfill()
-                
-            } else {
+            case .failure:
                 XCTFail()
             }
+            
+            expectation.fulfill()
         }
         
         imageDownloader.download(url: url, completionHandler: completionHandler)
@@ -169,16 +171,17 @@ final class ImageDownloaderTests: XCTestCase {
         
         MockAsyncUrlProtocol.deadline = 0
         
-        let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case .success = dataResponse {
+        let completionHandler: ImageDownloader.CompletionHandler = { result, _ in
+            switch result {
+            case .success:
                 XCTAssertNil(self.imageDownloader.currentLoaders[self.url])
                 XCTAssertNil(self.imageDownloader.currentCompletionHandlers[self.url])
                 
-                expectation.fulfill()
-                
-            } else {
+            case .failure:
                 XCTFail()
             }
+            
+            expectation.fulfill()
         }
         
         imageDownloader.download(url: url, completionHandler: completionHandler)
@@ -199,14 +202,16 @@ final class ImageDownloaderTests: XCTestCase {
         
         MockAsyncUrlProtocol.deadline = 0
         
-        let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case let .failure(error) = dataResponse {
-                XCTAssertEqual(error, ImageDownloaderError.dataInvalid)
-                expectation.fulfill()
-                
-            } else {
+        let completionHandler: ImageDownloader.CompletionHandler = { result, _ in
+            switch result {
+            case .success:
                 XCTFail()
+                
+            case .failure(let error):
+                XCTAssertEqual(error, .dataInvalid)
             }
+            
+            expectation.fulfill()
         }
         
         imageDownloader.download(url: url, completionHandler: completionHandler)
@@ -224,14 +229,16 @@ final class ImageDownloaderTests: XCTestCase {
         
         MockAsyncUrlProtocol.deadline = 0
         
-        let completionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case let .failure(error) = dataResponse {
-                XCTAssertEqual(error, ImageDownloaderError.cancelled)
-                expectation.fulfill()
-                
-            } else {
+        let completionHandler: ImageDownloader.CompletionHandler = { result, _ in
+            switch result {
+            case .success:
                 XCTFail()
+                
+            case .failure(let error):
+                XCTAssertEqual(error, .cancelled)
             }
+            
+            expectation.fulfill()
         }
         
         imageDownloader.download(url: url, completionHandler: completionHandler)
@@ -253,37 +260,43 @@ final class ImageDownloaderTests: XCTestCase {
         var actualClosureCallCount = 0
         let expectedClosureCallCount = 2
         
-        let firstCompletionHandler: ImageDownloader.CompletionHandler = { [weak self] dataResponse, _ in
+        let firstCompletionHandler: ImageDownloader.CompletionHandler = { [weak self] result, _ in
             guard let self = self else { return XCTFail() }
             
-            if case let .failure(error) = dataResponse {
-                XCTAssertEqual(error, ImageDownloaderError.cancelled)
-                XCTAssertNotNil(self.imageDownloader.currentLoaders[self.url])
-                
-                actualClosureCallCount += 1
-                
-                if actualClosureCallCount == expectedClosureCallCount {
-                    expectation.fulfill()
-                }
-                
-            } else {
+            switch result {
+            case .success:
                 XCTFail()
+                
+            case .failure(let error):
+                XCTAssertEqual(error, .cancelled)
+                XCTAssertNotNil(self.imageDownloader.currentLoaders[self.url])
+            }
+            
+            actualClosureCallCount += 1
+            
+            if actualClosureCallCount == expectedClosureCallCount {
+                expectation.fulfill()
             }
         }
         
-        let secondCompletionHandler: ImageDownloader.CompletionHandler = { dataResponse, _ in
-            if case .success = dataResponse {
-                actualClosureCallCount += 1
+        let secondCompletionHandler: ImageDownloader.CompletionHandler = { [weak self] result, _ in
+            guard let self = self else { return XCTFail() }
+            
+            switch result {
+            case .success:
                 XCTAssertNil(self.imageDownloader.currentLoaders[self.url])
                 
-                if actualClosureCallCount == expectedClosureCallCount {
-                    expectation.fulfill()
-                }
-                
-            } else {
+            case .failure:
                 XCTFail()
             }
+            
+            actualClosureCallCount += 1
+            
+            if actualClosureCallCount == expectedClosureCallCount {
+                expectation.fulfill()
+            }
         }
+        
         let imageViewOne = UIImageView()
         let imageViewTwo = UIImageView()
         
@@ -360,11 +373,12 @@ final class ImageDownloaderTests: XCTestCase {
         
         var isImageInCache = false
         
-        let completionHandler: ImageDownloader.CompletionHandler = { response, _ in
-            if case let .success(actualImage) = response {
+        let completionHandler: ImageDownloader.CompletionHandler = { result, _ in
+            switch result {
+            case .success(let actualImage):
                 XCTAssertEqual(actualImage, self.expectedImage)
-                
-            } else {
+            
+            case .failure:
                 XCTFail()
             }
             
@@ -402,7 +416,7 @@ final class ImageDownloaderTests: XCTestCase {
         
         XCTAssertEqual(imageDownloader.activeCompletionHandlers(for: self.url), 2)
         
-        imageDownloader.complete(url: url, receipt: receiptToCancel, dataResponse: .failure(ImageDownloaderError.cancelled))
+        imageDownloader.complete(url: url, receipt: receiptToCancel, result: .failure(.cancelled))
         wait(for: [expectation], timeout: 20)
     }
     
@@ -422,7 +436,7 @@ final class ImageDownloaderTests: XCTestCase {
         
         XCTAssertEqual(imageDownloader.activeCompletionHandlers(for: self.url), 2)
         
-        imageDownloader.complete(url: url, receipt: nil, dataResponse: .success(expectedImage))
+        imageDownloader.complete(url: url, receipt: nil, result: .success(expectedImage))
         wait(for: [expectation], timeout: 20)
     }
     

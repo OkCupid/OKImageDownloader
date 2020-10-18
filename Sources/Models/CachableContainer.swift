@@ -3,7 +3,7 @@
 //  OkCupid
 //
 //  Created by Jordan Guggenheim on 8/31/18.
-//  Copyright © 2018 OkCupid. All rights reserved.
+//  Copyright © 2020 OkCupid. All rights reserved.
 //
 
 import Foundation

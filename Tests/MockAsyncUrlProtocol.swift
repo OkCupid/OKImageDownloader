@@ -3,7 +3,7 @@
 //  OKImageDownloader
 //
 //  Created by Jordan Guggenheim on 9/24/18.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Copyright © 2020 OkCupid. All rights reserved.
 //
 
 import Foundation
