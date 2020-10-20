@@ -84,5 +84,39 @@ final class ImageDownloaderRequestTests: XCTestCase {
         
         wait(for: [expectation], timeout: 20)
     }
+    
+    func test_load_whenInvalidDataAndNSError_itCompletesWithNSError() {
+        let expectedNsError: NSError = .init(domain: "www.test.com", code: NSURLErrorNetworkConnectionLost, userInfo: nil)
+        
+        MockUrlProtocol.requestHandler = { request in
+            XCTAssertEqual(request.url, self.url)
+            return (HTTPURLResponse(), Data())
+        }
+        
+        MockUrlProtocol.error = expectedNsError
+        
+        let expectation = XCTestExpectation(description: "Image Error Response")
+        
+        loader.load { result in
+            switch result {
+            case .success:
+                XCTFail()
+                
+            case .failure(let error):
+                switch error {
+                case .cancelled, .dataInvalid, .dataMissing:
+                    XCTFail()
+                    
+                case .error(let actualNsError):
+                    XCTAssertEqual(actualNsError, expectedNsError)
+                }
+            }
+            
+            MockUrlProtocol.error = nil
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 20)
+    }
 
 }

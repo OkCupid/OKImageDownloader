@@ -14,7 +14,7 @@ public extension ObjectWrapper where T: UIButton {
                        for state: UIControl.State = .normal,
                        imageDownloader: ImageDownloading = ImageDownloader.shared,
                        completionHandler: ImageDownloader.CompletionHandler? = nil) {
-        cancelImageDownload()
+        cancelImageDownload(imageDownloader: imageDownloader)
         
         imageDownloader.download(url: url, receiptHandler: self) { result, downloadReceipt in
             guard let completionHandler = completionHandler else {
