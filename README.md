@@ -6,18 +6,21 @@
 
 ## Example
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+To run the example project, clone the repo, open the xcworkspace and run the Example target
 
 ## Requirements
 
+iOS 11.0 or greater
+
+Xcode 11 or greater
+
 ## Installation
 
-OKImageDownloader is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+OKImageDownloader is available through Swift Package Manager. To install:
 
-```ruby
-pod 'OKImageDownloader'
-```
+1. Select File > Swift Packages > Add Package Dependency. Enter `git@github.com:OkCupid/OKImageDownloader.git` in the "Choose Package Repository" dialog.
+2. In the next page, specify the version resolving rule as "Up to Next Major" with "1.0.0" as its earliest version.
+3. After Xcode checking out the source and resolving the version, you can choose the "OKImageDownlaoder" library and add it to your app target.
 
 ## Author
 
