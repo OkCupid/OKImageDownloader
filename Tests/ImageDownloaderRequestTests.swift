@@ -108,7 +108,8 @@ final class ImageDownloaderRequestTests: XCTestCase {
                     XCTFail()
                     
                 case .error(let actualNsError):
-                    XCTAssertEqual(actualNsError, expectedNsError)
+                    XCTAssertEqual(actualNsError.domain, expectedNsError.domain)
+                    XCTAssertEqual(actualNsError.code, expectedNsError.code)
                 }
             }
             
