@@ -13,7 +13,7 @@ public extension ObjectWrapper where T: UIImageView {
     func downloadImage(with url: URL,
                        imageDownloader: ImageDownloading = ImageDownloader.shared,
                        completionHandler: ImageDownloader.CompletionHandler? = nil) {
-        cancelImageDownload()
+        cancelImageDownload(imageDownloader: imageDownloader)
         
         imageDownloader.download(url: url, receiptHandler: self) { result, downloadReceipt in
             guard let completionHandler = completionHandler else {

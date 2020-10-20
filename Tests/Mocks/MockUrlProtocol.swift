@@ -12,6 +12,7 @@ import XCTest
 final class MockUrlProtocol: URLProtocol {
     
     static var requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data))?
+    static var error: NSError?
     
     override class func canInit(with request: URLRequest) -> Bool {
         return true
@@ -24,6 +25,11 @@ final class MockUrlProtocol: URLProtocol {
     override func startLoading() {
         guard let requestHandler = MockUrlProtocol.requestHandler else {
             XCTFail("received unexpected request with no handler set")
+            return
+        }
+        
+        if let error = Self.error {
+            client?.urlProtocol(self, didFailWithError: error)
             return
         }
         
