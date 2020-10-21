@@ -9,10 +9,24 @@
 import UIKit
 
 public extension ObjectWrapper where T: UIImageView {
+
+    var imageUrl: URL? {
+        get {
+            imageDownloaderReceipt?.url
+        }
+        set {
+            setImageUrl(with: newValue)
+        }
+    }
     
-    func setImage(with url: URL,
-                  imageDownloader: ImageDownloading = ImageDownloader.shared,
-                  completionHandler: ImageDownloader.CompletionHandler? = nil) {
+    func setImageUrl(with url: URL?,
+                     imageDownloader: ImageDownloading = ImageDownloader.shared,
+                     completionHandler: ImageDownloader.CompletionHandler? = nil) {
+        guard let url = url else {
+            cancelImageDownload(imageDownloader: imageDownloader)
+            return
+        }
+        
         if imageDownloaderReceipt != nil {
             assertionFailure("Active Download In Progress, Cancel Before Starting a New Request")
         }
