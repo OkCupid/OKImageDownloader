@@ -38,7 +38,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
         
         XCTAssertNil(button.ok.imageDownloaderReceipt)
         
-        button.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        button.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         XCTAssertNotNil(button.ok.imageDownloaderReceipt)
     }
@@ -53,7 +53,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
 
         let expectation = self.expectation(description: "Nil Receipt on Completion")
 
-        button.ok.setImageUrl(with: url, for: .normal, imageDownloader: imageDownloader) { (result, receipt) in
+        button.ok.setImageUrl(url: url, for: .normal, imageDownloader: imageDownloader) { (result, receipt) in
             switch result {
             case .success:
                 break
@@ -81,7 +81,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
 
         let expectation = self.expectation(description: "Nil Receipt on Completion")
 
-        button.ok.setImageUrl(with: url, for: .normal, imageDownloader: imageDownloader) { (result, receipt) in
+        button.ok.setImageUrl(url: url, for: .normal, imageDownloader: imageDownloader) { (result, receipt) in
             switch result {
             case .success:
                 XCTFail()
@@ -107,7 +107,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
 
         XCTAssertNil(button.ok.imageDownloaderReceipt)
 
-        button.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        button.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: nil)
 
         XCTAssertNotNil(button.ok.imageDownloaderReceipt)
 
@@ -136,7 +136,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        button.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
+        button.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
         wait(for: [expectation], timeout: 20)
     }
@@ -161,7 +161,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        button.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
+        button.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
         wait(for: [expectation], timeout: 20)
     }
@@ -174,7 +174,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
         
         XCTAssertNil(button.imageView?.image)
         
-        button.ok.setImageUrl(with: url, for: .highlighted, imageDownloader: imageDownloader, completionHandler: nil)
+        button.ok.setImageUrl(url: url, for: .highlighted, imageDownloader: imageDownloader, completionHandler: nil)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIButton Success Response")
         
@@ -195,7 +195,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Failure Response")
         
-        button.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        button.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + MockAsyncUrlProtocol.deadline + 0.1) {
             XCTAssertNil(self.button.imageView?.image)
@@ -215,14 +215,14 @@ final class UIButtonImageDownloaderTests: XCTestCase {
 
         let mockImageDownloader: MockImageDownloader = .init()
 
-        button.ok.setImageUrl(with: url, imageDownloader: mockImageDownloader, completionHandler: nil)
+        button.ok.setImageUrl(url: url, imageDownloader: mockImageDownloader, completionHandler: nil)
 
         button.imageView?.image = expectedImage
 
         XCTAssertNotNil(button.ok.imageDownloaderReceipt)
         XCTAssertEqual(mockImageDownloader.cancelCallCount, 0)
 
-        button.ok.setImageUrl(with: nil, imageDownloader: mockImageDownloader)
+        button.ok.setImageUrl(url: nil, imageDownloader: mockImageDownloader)
 
         XCTAssertNil(button.ok.imageDownloaderReceipt)
         XCTAssertEqual(mockImageDownloader.cancelCallCount, 1)

@@ -38,7 +38,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         XCTAssertNil(imageView.ok.imageDownloaderReceipt?.url)
         
-        imageView.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        imageView.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         XCTAssertNotNil(imageView.ok.imageDownloaderReceipt?.url)
     }
@@ -53,7 +53,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
 
         let expectation = self.expectation(description: "Nil Receipt on Completion")
 
-        imageView.ok.setImageUrl(with: url, imageDownloader: imageDownloader) { (result, receipt) in
+        imageView.ok.setImageUrl(url: url, imageDownloader: imageDownloader) { (result, receipt) in
             switch result {
             case .success:
                 break
@@ -81,7 +81,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
 
         let expectation = self.expectation(description: "Nil Receipt on Completion")
 
-        imageView.ok.setImageUrl(with: url, imageDownloader: imageDownloader) { (result, receipt) in
+        imageView.ok.setImageUrl(url: url, imageDownloader: imageDownloader) { (result, receipt) in
             switch result {
             case .success:
                 XCTFail()
@@ -107,7 +107,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
 
         XCTAssertNil(imageView.ok.imageDownloaderReceipt)
 
-        imageView.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        imageView.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: nil)
 
         XCTAssertNotNil(imageView.ok.imageDownloaderReceipt)
 
@@ -136,7 +136,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        imageView.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
+        imageView.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
         wait(for: [expectation], timeout: 20)
     }
@@ -161,7 +161,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
             expectation.fulfill()
         }
         
-        imageView.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
+        imageView.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: completionHandler)
         
         wait(for: [expectation], timeout: 20)
     }
@@ -174,7 +174,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         XCTAssertNil(imageView.image)
         
-        imageView.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        imageView.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Success Response")
         
@@ -194,7 +194,7 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Image Downloader UIImageView Failure Response")
         
-        imageView.ok.setImageUrl(with: url, imageDownloader: imageDownloader, completionHandler: nil)
+        imageView.ok.setImageUrl(url: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + MockAsyncUrlProtocol.deadline + 0.1) {
             XCTAssertNil(self.imageView.image)
@@ -214,14 +214,14 @@ final class UIImageViewImageDownloaderTests: XCTestCase {
 
         let mockImageDownloader: MockImageDownloader = .init()
 
-        imageView.ok.setImageUrl(with: url, imageDownloader: mockImageDownloader, completionHandler: nil)
+        imageView.ok.setImageUrl(url: url, imageDownloader: mockImageDownloader, completionHandler: nil)
 
         imageView.image = expectedImage
 
         XCTAssertNotNil(imageView.ok.imageDownloaderReceipt)
         XCTAssertEqual(mockImageDownloader.cancelCallCount, 0)
 
-        imageView.ok.setImageUrl(with: nil, imageDownloader: mockImageDownloader)
+        imageView.ok.setImageUrl(url: nil, imageDownloader: mockImageDownloader)
 
         XCTAssertNil(imageView.ok.imageDownloaderReceipt)
         XCTAssertEqual(mockImageDownloader.cancelCallCount, 1)
