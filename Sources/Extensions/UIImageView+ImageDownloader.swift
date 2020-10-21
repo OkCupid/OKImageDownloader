@@ -15,13 +15,13 @@ public extension ObjectWrapper where T: UIImageView {
             imageDownloaderReceipt?.url
         }
         set {
-            setImageUrl(url: newValue)
+            setImage(url: newValue)
         }
     }
     
-    func setImageUrl(url: URL?,
-                     imageDownloader: ImageDownloading = ImageDownloader.shared,
-                     completionHandler: ImageDownloader.CompletionHandler? = nil) {
+    func setImage(url: URL?,
+                  imageDownloader: ImageDownloading = ImageDownloader.shared,
+                  completionHandler: ImageDownloader.CompletionHandler? = nil) {
         guard let url = url else {
             cancelImageDownload(imageDownloader: imageDownloader)
             return

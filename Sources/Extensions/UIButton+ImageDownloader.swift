@@ -15,19 +15,19 @@ public extension ObjectWrapper where T: UIButton {
             imageDownloaderReceipt?.url
         }
         set {
-            setImageUrl(url: newValue)
+            setImage(url: newValue)
         }
     }
     
-    func setImageUrl(url: URL?,
-                     for state: UIControl.State = .normal,
-                     imageDownloader: ImageDownloading = ImageDownloader.shared,
-                     completionHandler: ImageDownloader.CompletionHandler? = nil) {
+    func setImage(url: URL?,
+                  for state: UIControl.State = .normal,
+                  imageDownloader: ImageDownloading = ImageDownloader.shared,
+                  completionHandler: ImageDownloader.CompletionHandler? = nil) {
         guard let url = url else {
             cancelImageDownload(imageDownloader: imageDownloader)
             return
         }
-
+        
         if imageDownloaderReceipt != nil {
             assertionFailure("Active Download In Progress, Cancel Before Starting a New Request")
         }
