@@ -15,7 +15,7 @@ final class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        imageView.ok.downloadImage(with: URL(string: "https://www.gstatic.com/webp/gallery/4.webp")!)
+        imageView.ok.setImage(with: URL(string: "https://www.gstatic.com/webp/gallery/4.webp")!)
     }
 }
 

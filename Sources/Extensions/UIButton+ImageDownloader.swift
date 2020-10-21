@@ -10,13 +10,17 @@ import UIKit
 
 public extension ObjectWrapper where T: UIButton {
     
-    func downloadImage(with url: URL,
-                       for state: UIControl.State = .normal,
-                       imageDownloader: ImageDownloading = ImageDownloader.shared,
-                       completionHandler: ImageDownloader.CompletionHandler? = nil) {
-        cancelImageDownload(imageDownloader: imageDownloader)
+    func setImage(with url: URL,
+                  for state: UIControl.State = .normal,
+                  imageDownloader: ImageDownloading = ImageDownloader.shared,
+                  completionHandler: ImageDownloader.CompletionHandler? = nil) {
+        if imageDownloaderReceipt != nil {
+            assertionFailure("Active Download In Progress, Cancel Before Starting a New Request")
+        }
         
         imageDownloader.download(url: url, receiptHandler: self) { result, downloadReceipt in
+            self.imageDownloaderReceipt = nil
+
             guard let completionHandler = completionHandler else {
                 switch result {
                 case .success(let image):
