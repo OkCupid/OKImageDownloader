@@ -53,7 +53,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
 
         let expectation = self.expectation(description: "Nil Receipt on Completion")
 
-        button.ok.setImage(url: url, for: .normal, imageDownloader: imageDownloader) { (result, receipt) in
+        button.ok.setImage(url: url, imageDownloader: imageDownloader) { (result, receipt) in
             switch result {
             case .success:
                 break
@@ -81,7 +81,7 @@ final class UIButtonImageDownloaderTests: XCTestCase {
 
         let expectation = self.expectation(description: "Nil Receipt on Completion")
 
-        button.ok.setImage(url: url, for: .normal, imageDownloader: imageDownloader) { (result, receipt) in
+        button.ok.setImage(url: url, imageDownloader: imageDownloader) { (result, receipt) in
             switch result {
             case .success:
                 XCTFail()
@@ -174,13 +174,12 @@ final class UIButtonImageDownloaderTests: XCTestCase {
         
         XCTAssertNil(button.imageView?.image)
         
-        button.ok.setImage(url: url, for: .highlighted, imageDownloader: imageDownloader, completionHandler: nil)
+        button.ok.setImage(url: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         let expectation = XCTestExpectation(description: "Image Downloader UIButton Success Response")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + MockAsyncUrlProtocol.deadline + 0.1) {
-            XCTAssertNil(self.button.image(for: .normal))
-            XCTAssertNotNil(self.button.image(for: .highlighted))
+            XCTAssertNotNil(self.button.image(for: .normal))
             expectation.fulfill()
         }
         
