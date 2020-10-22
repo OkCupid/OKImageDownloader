@@ -38,9 +38,10 @@ final class UIButtonImageDownloaderTests: XCTestCase {
         
         XCTAssertNil(button.ok.imageDownloaderReceipt)
         
-        button.ok.setImage(url: url, imageDownloader: imageDownloader, completionHandler: nil)
+        let receipt: ImageDownloaderReceipt? = button.ok.setImage(url: url, imageDownloader: imageDownloader, completionHandler: nil)
         
         XCTAssertNotNil(button.ok.imageDownloaderReceipt)
+        XCTAssertEqual(button.ok.imageDownloaderReceipt, receipt)
     }
 
     func test_setImageUrl_whenSuccess_itNilsTheImageDownloadReceipt() {
