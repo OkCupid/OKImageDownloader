@@ -6,9 +6,9 @@ let package = Package(
     name: "OKImageDownloader",
     platforms: [.iOS(.v11)],
     products: [
-        .library(
-            name: "OKImageDownloader",
-            targets: ["OKImageDownloader"]),
+        .library(name: "OKImageDownloader", targets: ["OKImageDownloader"]),
+        .library(name: "OKImageDownloaderStatic", type: .static, targets: ["OKImageDownloader"]),
+        .library(name: "OKImageDownloaderDynamic", type: .dynamic, targets: ["OKImageDownloader"])
     ],
     targets: [
         .target(
