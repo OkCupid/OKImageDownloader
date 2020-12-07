@@ -188,6 +188,7 @@ public final class ImageDownloader: ImageDownloading {
             switch result {
             case .success(let image):
                 let imageCost: Int = image.pngData()?.count ?? 0
+                _ = image.cgImage?.dataProvider?.data
                 self.imageMemoryCache.setObject(CachableContainer(object: image), forKey: url as NSURL, cost: imageCost)
             
             case .failure:
