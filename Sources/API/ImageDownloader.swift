@@ -15,11 +15,7 @@ public final class ImageDownloader: ImageDownloading {
     public typealias CompletionHandler = (_ result: Result<UIImage, ImageDownloaderError>, _ downloadReceipt: ImageDownloaderReceipt) -> Void
     public static let shared: ImageDownloader = .init()
     
-    public var imageMemoryCacheCapacityInBytes: Int = 40.megabytesInBytes {
-        didSet {
-            imageMemoryCache.totalCostLimit = imageMemoryCacheCapacityInBytes
-        }
-    }
+    public var imageMemoryCacheCapacityInBytes: Int = 40.megabytesInBytes
     
     public lazy var session: URLSession = URLSession(configuration: urlSessionConfiguration)
     
@@ -53,11 +49,7 @@ public final class ImageDownloader: ImageDownloading {
     lazy var currentLoaders = [URL: APIUrlLoader<ImageDownloaderRequest>]()
     lazy var currentCompletionHandlers = [URL: [ImageDownloaderReceipt: CompletionHandler]]()
     
-    lazy var imageMemoryCache: NSCache<NSURL, CachableContainer<UIImage>> = {
-        let imageCache = NSCache<NSURL, CachableContainer<UIImage>>()
-        imageCache.totalCostLimit = imageMemoryCacheCapacityInBytes
-        return imageCache
-    }()
+    lazy var imageMemoryCache: [URL: UIImage] = [:]
     
     private let notificationCenter: NotificationCenter
     
@@ -102,7 +94,7 @@ public final class ImageDownloader: ImageDownloading {
     // MARK - Cached
     
     public func cachedImage(url: URL) -> UIImage? {
-        return imageMemoryCache.object(forKey: url as NSURL)?.object
+        return imageMemoryCache[url]
     }
     
     // MARK: - Cancelling
@@ -116,7 +108,7 @@ public final class ImageDownloader: ImageDownloading {
     // MARK: - Notifications
     
     @objc func didReceiveMemoryWarning() {
-        imageMemoryCache.removeAllObjects()
+        imageMemoryCache.removeAll()
     }
     
     // MARK: - Internal Helpers
@@ -144,8 +136,8 @@ public final class ImageDownloader: ImageDownloading {
     }
     
     func checkForImageInCacheAndCompleteIfNeeded(with url: URL, receipt: ImageDownloaderReceipt, completionHandler: @escaping CompletionHandler) -> Bool {
-        if let imageCachableContainer: CachableContainer<UIImage> = imageMemoryCache.object(forKey: url as NSURL) {
-            completionHandler(.success(imageCachableContainer.object), receipt)
+        if let image: UIImage = imageMemoryCache[url] {
+            completionHandler(.success(image), receipt)
             
             return true
         }
@@ -187,9 +179,7 @@ public final class ImageDownloader: ImageDownloading {
         imageProcessingQueue.async {
             switch result {
             case .success(let image):
-                let imageCost: Int = image.pngData()?.count ?? 0
-                _ = image.cgImage?.dataProvider?.data
-                self.imageMemoryCache.setObject(CachableContainer(object: image), forKey: url as NSURL, cost: imageCost)
+                self.imageMemoryCache[url] = image
             
             case .failure:
                 break
