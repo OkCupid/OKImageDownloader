@@ -78,10 +78,6 @@ public final class ImageDownloader: ImageDownloading {
         let receipt: ImageDownloaderReceipt = .init(id: UUID(), url: url)
         receiptHandler?.imageDownloaderReceipt = receipt
         
-        guard !checkForImageInCacheAndCompleteIfNeeded(with: url, receipt: receipt, completionHandler: completionHandler) else {
-            return
-        }
-        
         synchronizationQueue.sync {
             guard !checkForCurrentLoaderInProgressAndAppendCompletionIfNeeded(with: url, receipt: receipt, completionHandler: completionHandler) else {
                 return
