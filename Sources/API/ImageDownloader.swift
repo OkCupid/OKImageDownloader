@@ -108,9 +108,7 @@ public final class ImageDownloader: ImageDownloading {
     // MARK: - Cancelling
     
     public func cancel(url: URL, receipt: ImageDownloaderReceipt? = nil) {
-        synchronizationQueue.sync {
-            complete(url: url, receipt: receipt, result: .failure(.cancelled))
-        }
+        complete(url: url, receipt: receipt, result: .failure(.cancelled))
     }
     
     // MARK: - Notifications
