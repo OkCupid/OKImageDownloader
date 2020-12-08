@@ -40,11 +40,14 @@ public extension ObjectWrapper where T: UIImageView {
         }
         
         imageDownloader.download(url: url, receiptHandler: self) { result, downloadReceipt in
+            let isDownloadCancelled: Bool = self.imageDownloaderReceipt?.url != url
             self.imageDownloaderReceipt = nil
             
             guard let completionHandler = completionHandler else {
                 switch result {
                 case .success(let image):
+                    guard isDownloadCancelled == false else { return }
+
                     DispatchQueue.executeAsyncOnMain {
                         self.object.image = image
                     }
